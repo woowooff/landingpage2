@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>감귤박 소개페이지 — 디자인 시안 3종</title>
+<style>
+/* ══════════ 공통 · 시안 선택 바 ══════════ */
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#e9e7e2;font-family:"Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",system-ui,sans-serif}
+
+.picker{position:sticky;top:0;z-index:99;background:#1c1a16;color:#f3f0e8;
+        padding:14px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;
+        box-shadow:0 2px 14px rgba(0,0,0,.25)}
+.picker .label{font-size:12.5px;letter-spacing:.06em;color:#a9a396;margin-right:6px}
+.picker button{font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;
+        background:transparent;color:#c9c3b5;border:1px solid #4a453b;border-radius:3px;
+        padding:8px 16px;transition:.18s}
+.picker button:hover{border-color:#8a8272;color:#fff}
+.picker button[aria-selected="true"]{background:#f3f0e8;color:#1c1a16;border-color:#f3f0e8}
+.picker .hint{margin-left:auto;font-size:12px;color:#8a8272}
+
+.pane{display:none;animation:fade .4s ease both}
+.pane.on{display:block}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+/* 미확정 값 표시 (시안 단계 전용) */
+.tbd{background:#ffe9a8;color:#7a5a00;border-radius:2px;padding:0 5px;
+     font-size:.86em;font-weight:700;white-space:nowrap}
+
+/* 스크롤 등장 모션 (공통) */
+.rise{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.3,1)}
+.rise.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rise{opacity:1;transform:none;transition:none}}
+
+
+/* ══════════════════════════════════════════
+   A안 — 기술자료형 (Technical Sheet)
+   흰 바탕 · 잉크 네이비 · 규격표가 주인공
+   ══════════════════════════════════════════ */
+.a{--ink:#0f1b2a;--ink2:#41505f;--ink3:#7b8794;--line:#dde3e9;--line2:#eef2f5;
+   --bg:#fff;--bg2:#f6f8fa;--key:#0b4a6f;--acc:#c8641a;
+   background:var(--bg);color:var(--ink);font-size:16px;line-height:1.7}
+.a .w{max-width:1080px;margin:0 auto;padding:0 28px}
+.a .topbar{border-bottom:1px solid var(--line);background:#fff;position:relative}
+.a .topbar .w{display:flex;align-items:center;gap:14px;height:62px}
+.a .logo{font-weight:800;letter-spacing:-.02em;font-size:17px}
+.a .logo span{color:var(--ink3);font-weight:400;font-size:13px;margin-left:8px}
+.a .topcta{margin-left:auto;font-size:13.5px;font-weight:700;color:#fff;background:var(--key);
+           padding:9px 18px;border-radius:3px;text-decoration:none}
+
+.a .hero{border-bottom:1px solid var(--line);padding:78px 0 66px}
+.a .eyebrow{font-size:12px;letter-spacing:.16em;color:var(--key);font-weight:700;margin-bottom:18px}
+.a h1{font-size:clamp(30px,4.2vw,46px);line-height:1.26;letter-spacing:-.03em;font-weight:800;
+      margin:0 0 20px;max-width:20ch}
+.a .lede{font-size:17.5px;color:var(--ink2);max-width:60ch;margin:0}
+.a .lede b{color:var(--ink)}
+.a .herobtns{display:flex;gap:10px;flex-wrap:wrap;margin-top:32px}
+.a .btn{display:inline-block;font-size:14.5px;font-weight:700;text-decoration:none;padding:13px 26px;
+        border-radius:3px;transition:.18s}
+.a .btn-p{background:var(--key);color:#fff}
+.a .btn-p:hover{background:#093a57;transform:translateY(-1px)}
+.a .btn-s{border:1px solid var(--line);color:var(--ink)}
+.a .btn-s:hover{border-color:var(--ink3)}
+
+.a .specstrip{background:var(--bg2);border-bottom:1px solid var(--line)}
+.a .specstrip .w{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+                 border-left:1px solid var(--line);border-right:1px solid var(--line);padding:0}
+.a .sp{background:var(--bg2);padding:22px 20px}
+.a .sp dt{font-size:11.5px;letter-spacing:.08em;color:var(--ink3);margin-bottom:7px}
+.a .sp dd{margin:0;font-size:20px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.a .sp small{display:block;font-size:12px;color:var(--ink3);font-weight:400;margin-top:4px;letter-spacing:0}
+
+.a section{padding:76px 0;border-bottom:1px solid var(--line)}
+.a .snum{font-size:12px;letter-spacing:.1em;color:var(--acc);font-weight:800;margin-bottom:9px}
+.a h2{font-size:clamp(21px,2.6vw,28px);letter-spacing:-.02em;font-weight:800;margin:0 0 12px;line-height:1.35}
+.a .sub{color:var(--ink2);max-width:66ch;margin:0 0 34px;font-size:15.5px}
+
+.a table{width:100%;border-collapse:collapse;font-size:15px}
+.a th,.a td{text-align:left;padding:14px 16px;border-bottom:1px solid var(--line2)}
+.a thead th{font-size:12px;letter-spacing:.05em;color:var(--ink3);border-bottom:1px solid var(--line);
+            background:var(--bg2)}
+.a td:first-child{font-weight:700;width:190px}
+.a td.n{font-variant-numeric:tabular-nums}
+
+.a .grid16{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+           border:1px solid var(--line)}
+.a .cell{background:#fff;padding:18px 18px 20px;transition:.2s}
+.a .cell:hover{background:var(--bg2)}
+.a .cell .no{font-size:11px;color:var(--ink3);font-variant-numeric:tabular-nums}
+.a .cell .nm{font-weight:700;font-size:14.5px;margin:5px 0 6px;letter-spacing:-.01em}
+.a .cell .ds{font-size:12.5px;color:var(--ink2);line-height:1.55}
+.a .cell.hi{background:#f2f7fb}
+.a .cell.hi .nm{color:var(--key)}
+.a .tier{display:flex;align-items:baseline;gap:10px;margin:34px 0 12px}
+.a .tier b{font-size:14.5px;letter-spacing:-.01em}
+.a .tier span{font-size:12.5px;color:var(--ink3)}
+.a .tier:first-of-type{margin-top:0}
+
+.a .ev{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line)}
+.a .evc{background:#fff;padding:26px 26px 28px}
+.a .evc h3{margin:0 0 10px;font-size:16px;letter-spacing:-.01em}
+.a .evc p{margin:0 0 10px;font-size:14.5px;color:var(--ink2)}
+.a .evc .src{font-size:12px;color:var(--ink3);border-top:1px solid var(--line2);padding-top:10px;margin-top:14px}
+
+.a .cta{background:var(--ink);color:#fff;border:0;padding:72px 0}
+.a .cta h2{color:#fff}
+.a .cta .sub{color:#a9b6c2}
+.a form{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:760px}
+.a label{display:block;font-size:12.5px;color:#a9b6c2;margin-bottom:6px}
+.a input,.a select,.a textarea{width:100%;font-family:inherit;font-size:15px;padding:12px 14px;
+     border:1px solid #2b3a4a;background:#16232f;color:#fff;border-radius:3px}
+.a .full{grid-column:1/-1}
+.a button.send{grid-column:1/-1;background:#fff;color:var(--ink);border:0;font-weight:800;font-size:15px;
+     padding:15px;border-radius:3px;cursor:pointer;font-family:inherit}
+.a footer{padding:40px 0;font-size:13px;color:var(--ink3)}
+
+@media(max-width:860px){
+ .a .specstrip .w{grid-template-columns:1fr 1fr}
+ .a .grid16{grid-template-columns:1fr 1fr}
+ .a .ev{grid-template-columns:1fr}
+ .a form{grid-template-columns:1fr}
+ .a td:first-child{width:auto}
+}
+
+
+/* ══════════════════════════════════════════
+   B안 — 제주 산지형 (Editorial)
+   따뜻한 종이색 · 명조 제목 · 읽는 신뢰
+   ══════════════════════════════════════════ */
+.b{--paper:#f6f3ec;--card:#fffdf8;--ink:#23201a;--ink2:#4d473d;--ink3:#7a7263;
+   --rule:#ddd6c7;--rule2:#e9e3d6;--green:#2c6249;--acc:#8f5a12;
+   --serif:"Nanum Myeongjo","Batang","바탕",Georgia,serif;
+   background:var(--paper);color:var(--ink);font-size:16px;line-height:1.75}
+.b .w{max-width:1000px;margin:0 auto;padding:0 26px}
+.b .topbar{border-bottom:1px solid var(--rule)}
+.b .topbar .w{display:flex;align-items:center;height:66px;gap:14px}
+.b .logo{font-family:var(--serif);font-size:19px;font-weight:700;letter-spacing:.02em}
+.b .logo span{font-family:inherit;font-size:12px;color:var(--ink3);margin-left:10px;letter-spacing:.04em}
+.b .topcta{margin-left:auto;font-size:13px;font-weight:700;text-decoration:none;color:var(--green);
+           border:1px solid var(--green);padding:9px 16px;border-radius:2px;transition:.2s}
+.b .topcta:hover{background:var(--green);color:#fff}
+
+.b .hero{padding:96px 0 84px;position:relative;overflow:hidden}
+.b .hero::after{content:"";position:absolute;right:-140px;top:-90px;width:460px;height:460px;
+  border-radius:50%;background:radial-gradient(circle at 35% 35%,#f7d9a6 0%,#f2c98a 45%,transparent 70%);
+  opacity:.55;pointer-events:none}
+.b .eyebrow{font-size:12px;letter-spacing:.16em;color:var(--acc);margin-bottom:22px}
+.b h1{font-family:var(--serif);font-size:clamp(32px,5vw,52px);line-height:1.32;font-weight:700;
+      letter-spacing:-.01em;margin:0 0 24px;max-width:17ch;position:relative}
+.b .lede{font-size:18px;color:var(--ink2);max-width:56ch;margin:0;position:relative}
+.b .lede b{color:var(--ink)}
+.b .herobtns{display:flex;gap:12px;flex-wrap:wrap;margin-top:36px;position:relative}
+.b .btn{font-size:14.5px;font-weight:700;text-decoration:none;padding:14px 28px;border-radius:2px;
+        display:inline-block;transition:.2s}
+.b .btn-p{background:var(--green);color:#fff}
+.b .btn-p:hover{background:#204a37;transform:translateY(-2px);box-shadow:0 8px 20px rgba(44,98,73,.22)}
+.b .btn-s{border:1px solid var(--rule);color:var(--ink2)}
+.b .btn-s:hover{border-color:var(--ink3)}
+
+.b .flow{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);background:var(--card)}
+.b .flow .w{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding-top:30px;padding-bottom:30px}
+.b .fl{position:relative;padding-left:20px}
+.b .fl::before{content:"";position:absolute;left:0;top:9px;width:8px;height:8px;border-radius:50%;
+               background:var(--acc);opacity:.6}
+.b .fl b{display:block;font-size:14.5px;margin-bottom:3px}
+.b .fl span{font-size:12.5px;color:var(--ink3)}
+
+.b section{padding:84px 0}
+.b section+section{border-top:1px solid var(--rule)}
+.b .snum{font-size:12px;letter-spacing:.12em;color:var(--acc);font-weight:700;margin-bottom:10px}
+.b h2{font-family:var(--serif);font-size:clamp(23px,3vw,32px);font-weight:700;line-height:1.4;
+      margin:0 0 14px;letter-spacing:-.01em}
+.b .sub{color:var(--ink2);max-width:62ch;margin:0 0 38px;font-size:16px}
+
+.b .specs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.b .spec{background:var(--card);border:1px solid var(--rule);border-radius:3px;padding:22px 22px 24px}
+.b .spec dt{font-size:12px;letter-spacing:.06em;color:var(--ink3);margin-bottom:9px}
+.b .spec dd{margin:0;font-family:var(--serif);font-size:24px;font-weight:700;letter-spacing:-.01em}
+.b .spec small{display:block;font-family:inherit;font-size:12.5px;color:var(--ink3);
+               font-weight:400;margin-top:8px;line-height:1.5}
+
+.b .tierhead{display:flex;align-items:baseline;gap:12px;margin:0 0 16px}
+.b .tierhead b{font-family:var(--serif);font-size:18px}
+.b .tierhead span{font-size:13px;color:var(--ink3)}
+.b .list{background:var(--card);border:1px solid var(--rule);border-radius:3px;overflow:hidden;
+         margin-bottom:34px}
+.b .row{display:grid;grid-template-columns:34px 1fr 1.35fr;gap:16px;padding:16px 22px;
+        border-top:1px solid var(--rule2);transition:.2s}
+.b .row:first-child{border-top:0}
+.b .row:hover{background:#fdf8ec}
+.b .row .no{font-family:var(--serif);font-size:15px;color:var(--ink3);font-variant-numeric:tabular-nums}
+.b .row .nm{font-weight:700;font-size:15.5px;letter-spacing:-.01em}
+.b .row .ds{font-size:13.5px;color:var(--ink2);line-height:1.6}
+.b .row .ds em{font-style:normal;color:var(--green);font-weight:700}
+
+.b .quote{font-family:var(--serif);font-size:19px;line-height:1.8;color:var(--ink);
+          border-left:2px solid var(--acc);padding:6px 0 6px 22px;max-width:60ch;margin:0 0 34px}
+.b .ev{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.b .evc{background:var(--card);border:1px solid var(--rule);border-radius:3px;padding:26px}
+.b .evc h3{font-family:var(--serif);font-size:18px;margin:0 0 12px;font-weight:700}
+.b .evc p{margin:0 0 12px;font-size:14.5px;color:var(--ink2)}
+.b .evc .src{font-size:12px;color:var(--ink3);border-top:1px solid var(--rule2);padding-top:12px;margin-top:14px}
+
+.b .cta{background:var(--green);color:#f2f7f3}
+.b .cta h2,.b .cta .snum{color:#fff}
+.b .cta .snum{color:#a9d3bf}
+.b .cta .sub{color:#c3ded1}
+.b form{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:720px}
+.b label{display:block;font-size:12.5px;color:#a9d3bf;margin-bottom:6px}
+.b input,.b select,.b textarea{width:100%;font-family:inherit;font-size:15px;padding:13px 14px;
+     border:1px solid #3f7a5f;background:#255440;color:#fff;border-radius:2px}
+.b .full{grid-column:1/-1}
+.b button.send{grid-column:1/-1;background:#fffdf8;color:var(--green);border:0;font-weight:800;
+     font-size:15px;padding:16px;border-radius:2px;cursor:pointer;font-family:inherit}
+.b footer{padding:44px 0;font-size:13px;color:var(--ink3);border-top:1px solid var(--rule)}
+
+@media(max-width:860px){
+ .b .flow .w{grid-template-columns:1fr 1fr;gap:18px}
+ .b .specs{grid-template-columns:1fr}
+ .b .row{grid-template-columns:26px 1fr;gap:10px}
+ .b .row .ds{grid-column:2}
+ .b .ev{grid-template-columns:1fr}
+ .b form{grid-template-columns:1fr}
+}
+
+
+/* ══════════════════════════════════════════
+   C안 — 산업 벤토형 (Bento / 카드 격자)
+   차분한 회색 바탕 · 카드로 정보 정돈
+   ══════════════════════════════════════════ */
+.c{--bg:#eceae6;--card:#fff;--ink:#181c1a;--ink2:#4a524e;--ink3:#858d89;
+   --line:#dfddd8;--green:#1e4d3a;--acc:#d9822b;
+   background:var(--bg);color:var(--ink);font-size:16px;line-height:1.7}
+.c .w{max-width:1160px;margin:0 auto;padding:0 24px}
+.c .topbar{background:rgba(236,234,230,.9);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.c .topbar .w{display:flex;align-items:center;height:64px;gap:14px}
+.c .logo{font-weight:800;font-size:17px;letter-spacing:-.02em}
+.c .logo span{font-weight:400;font-size:12.5px;color:var(--ink3);margin-left:9px}
+.c .topcta{margin-left:auto;background:var(--green);color:#fff;font-size:13.5px;font-weight:700;
+           padding:10px 18px;border-radius:8px;text-decoration:none}
+
+.c .hero{padding:64px 0 20px}
+.c .bento{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.c .box{background:var(--card);border-radius:14px;padding:28px;border:1px solid var(--line);
+        transition:transform .25s cubic-bezier(.2,.7,.3,1),box-shadow .25s}
+.c .box:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(24,28,26,.08)}
+.c .b-main{grid-column:span 4;padding:40px}
+.c .b-side{grid-column:span 2;display:flex;flex-direction:column;justify-content:center}
+.c .b-third{grid-column:span 2}
+.c .eyebrow{font-size:11.5px;letter-spacing:.14em;color:var(--acc);font-weight:800;margin-bottom:16px}
+.c h1{font-size:clamp(28px,3.8vw,42px);line-height:1.28;letter-spacing:-.03em;font-weight:800;
+      margin:0 0 18px}
+.c .lede{font-size:16.5px;color:var(--ink2);margin:0;max-width:46ch}
+.c .lede b{color:var(--ink)}
+.c .herobtns{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.c .btn{font-size:14.5px;font-weight:700;text-decoration:none;padding:13px 24px;border-radius:9px;
+        display:inline-block;transition:.2s}
+.c .btn-p{background:var(--green);color:#fff}
+.c .btn-p:hover{background:#153729;transform:translateY(-1px)}
+.c .btn-s{border:1px solid var(--line);color:var(--ink2);background:var(--card)}
+.c .stat{font-size:34px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums;
+         line-height:1.2}
+.c .stat small{display:block;font-size:12.5px;font-weight:400;color:var(--ink3);margin-top:8px;
+               letter-spacing:0;line-height:1.5}
+.c .b-dark{background:var(--green);color:#eaf3ee;border-color:var(--green)}
+.c .b-dark .stat{color:#fff}
+.c .b-dark .stat small{color:#a8ccb9}
+
+.c section{padding:56px 0}
+.c .shead{margin-bottom:24px}
+.c .snum{font-size:11.5px;letter-spacing:.12em;color:var(--acc);font-weight:800;margin-bottom:8px}
+.c h2{font-size:clamp(21px,2.6vw,29px);font-weight:800;letter-spacing:-.025em;margin:0 0 10px}
+.c .sub{color:var(--ink2);max-width:64ch;margin:0;font-size:15.5px}
+
+.c .g16{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.c .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;
+         transition:transform .22s,box-shadow .22s,border-color .22s}
+.c .card:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(24,28,26,.07)}
+.c .card .no{font-size:11px;color:var(--ink3);font-variant-numeric:tabular-nums;font-weight:700}
+.c .card .nm{font-weight:800;font-size:15px;margin:6px 0 7px;letter-spacing:-.02em}
+.c .card .ds{font-size:12.5px;color:var(--ink2);line-height:1.55}
+.c .card.hi{border-color:var(--green);background:#f3f8f5}
+.c .card.hi .nm{color:var(--green)}
+.c .tierbar{display:flex;align-items:baseline;gap:10px;margin:30px 0 14px}
+.c .tierbar b{font-size:15px;letter-spacing:-.01em}
+.c .tierbar span{font-size:12.5px;color:var(--ink3)}
+.c .tierbar:first-of-type{margin-top:0}
+
+.c .specs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.c .spec{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px}
+.c .spec dt{font-size:11.5px;letter-spacing:.06em;color:var(--ink3);margin-bottom:8px}
+.c .spec dd{margin:0;font-size:22px;font-weight:800;letter-spacing:-.02em}
+.c .spec small{display:block;font-size:12px;color:var(--ink3);font-weight:400;margin-top:7px;line-height:1.5}
+
+.c .ev{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.c .evc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:26px}
+.c .evc h3{margin:0 0 10px;font-size:16.5px;letter-spacing:-.02em}
+.c .evc p{margin:0 0 10px;font-size:14.5px;color:var(--ink2)}
+.c .evc .src{font-size:12px;color:var(--ink3);border-top:1px solid var(--line);padding-top:11px;margin-top:14px}
+
+.c .ctabox{background:var(--green);border-radius:16px;padding:44px;color:#eaf3ee}
+.c .ctabox h2{color:#fff}
+.c .ctabox .sub{color:#b6d6c5;margin-bottom:28px}
+.c form{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:760px}
+.c label{display:block;font-size:12.5px;color:#a8ccb9;margin-bottom:6px}
+.c input,.c select,.c textarea{width:100%;font-family:inherit;font-size:15px;padding:13px 14px;
+     border:1px solid #37674f;background:#25543f;color:#fff;border-radius:8px}
+.c .full{grid-column:1/-1}
+.c button.send{grid-column:1/-1;background:#fff;color:var(--green);border:0;font-weight:800;font-size:15px;
+     padding:16px;border-radius:9px;cursor:pointer;font-family:inherit}
+.c footer{padding:40px 0;font-size:13px;color:var(--ink3)}
+
+@media(max-width:960px){
+ .c .bento{grid-template-columns:repeat(2,1fr)}
+ .c .b-main{grid-column:span 2;padding:28px}
+ .c .b-side,.c .b-third{grid-column:span 1}
+ .c .g16{grid-template-columns:1fr 1fr}
+ .c .specs{grid-template-columns:1fr 1fr}
+ .c .ev{grid-template-columns:1fr}
+ .c form{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="picker" role="tablist">
+  <span class="label">디자인 시안</span>
+  <button role="tab" aria-selected="true"  data-t="a">A · 기술자료형</button>
+  <button role="tab" aria-selected="false" data-t="b">B · 제주 산지형</button>
+  <button role="tab" aria-selected="false" data-t="c">C · 산업 벤토형</button>
+  <span class="hint">노란 표시 <span class="tbd">확인 필요</span> = 실무 확정 대기 값</span>
+</div>
+
+
+<!-- ══════════════════ A안 ══════════════════ -->
+<div class="pane on a" id="pane-a">
+
+  <div class="topbar"><div class="w">
+    <div class="logo">(주)수창 <span>제주 · 농수산 원료 공급</span></div>
+    <a class="topcta" href="#a-cta">샘플·견적 문의</a>
+  </div></div>
+
+  <div class="hero"><div class="w">
+    <div class="eyebrow rise">DRIED CITRUS PULP · 건조 감귤박</div>
+    <h1 class="rise">규격이 확정된<br>건조 감귤박 원료를<br>샘플부터 대량까지.</h1>
+    <p class="lede rise">제주에서 주스를 짜고 남은 감귤박을 건조·분쇄해 <b>사료·소재·농자재 원료</b>로 공급합니다.
+      버려지던 부산물을 원료로 되돌리는 <b>자원순환(업사이클)</b> 공급망입니다.</p>
+    <div class="herobtns rise">
+      <a class="btn btn-p" href="#a-cta">샘플·견적 문의</a>
+      <a class="btn btn-s" href="#a-use">활용 분야 16갈래 보기</a>
+    </div>
+  </div></div>
+
+  <div class="specstrip"><div class="w">
+    <dl class="sp"><dt>제주 연간 발생량</dt><dd>5~7만 톤<small>건조 시 약 1만 톤</small></dl>
+    <dl class="sp"><dt>공급 형태</dt><dd>3종<small>건조 원물 · 분말 · 생박</small></dl>
+    <dl class="sp"><dt>업력</dt><dd>약 20년<small>B2B 원료 공급</small></dl>
+    <dl class="sp"><dt>취급 원물</dt><dd>230여 종<small><span class="tbd">종수 확인</span></small></dl>
+  </div></div>
+
+  <section><div class="w">
+    <div class="snum rise">01 — 원료 개요</div>
+    <h2 class="rise">감귤박이란, 그리고 우리가 내보내는 규격</h2>
+    <p class="sub rise">감귤박은 <b>주스를 짜고 남은 껍질·속껍질·과육 찌꺼기</b>입니다.
+      말린 껍질(귤피)과는 다른 원료이므로, 저희는 <b>착즙 잔여물 기준의 자료만</b> 근거로 씁니다.</p>
+    <table class="rise">
+      <thead><tr><th>항목</th><th>규격</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td>형태</td><td>건조 원물 / 분말 / 생박(미건조)</td><td>용도별 선택</td></tr>
+        <tr><td>수분율</td><td class="n"><span class="tbd">○○% 이하</span></td><td>실측값 입력 예정</td></tr>
+        <tr><td>입도</td><td class="n"><span class="tbd">○○ mesh</span></td><td>사료용·제지용·압출용이 각각 다름</td></tr>
+        <tr><td>포장 단위</td><td><span class="tbd">○○ kg</span></td><td>톤백/소포장</td></tr>
+        <tr><td>월 공급량</td><td class="n"><span class="tbd">○○ 톤</span></td><td>연중 공급 개월 별도 안내</td></tr>
+        <tr><td>샘플 조건</td><td><span class="tbd">○○ kg / 무상·유상</span></td><td>문의 시 안내</td></tr>
+        <tr><td>잔류농약·중금속</td><td>기준치 이하</td><td>공인 시험성적서 발급 준비 중</td></tr>
+      </tbody>
+    </table>
+  </div></section>
+
+  <section id="a-use"><div class="w">
+    <div class="snum rise">02 — 활용 분야</div>
+    <h2 class="rise">감귤박이 들어갈 수 있는 16갈래</h2>
+    <p class="sub rise">분야를 좁히지 않고 전부 공개합니다. <b>바로 공급 가능한 분야</b>와
+      <b>규격을 맞추면 가능한 분야</b>, <b>함께 개발할 분야</b>로 나누어 두었습니다.</p>
+
+    <div class="tier rise"><b>바로 공급 가능</b><span>건조 원물·분말·생박을 그대로 배합</span></div>
+    <div class="grid16 rise">
+      <div class="cell hi"><div class="no">01</div><div class="nm">가축 사료</div><div class="ds">한우·양돈 등 축종별 배합 상한 가이드 제공</div></div>
+      <div class="cell hi"><div class="no">02</div><div class="nm">제지·포장재 원료</div><div class="ds">골판지 원지 배합, 펄프몰드 용기·완충재</div></div>
+      <div class="cell hi"><div class="no">03</div><div class="nm">친환경 농자재</div><div class="ds">토양개량제·유기질비료, 축사 악취저감</div></div>
+      <div class="cell hi"><div class="no">04</div><div class="nm">곤충 사육 배지</div><div class="ds">동애등에 유충 먹이 — 건조 전 생박 공급</div></div>
+      <div class="cell hi"><div class="no">05</div><div class="nm">버섯 재배 배지</div><div class="ds">기존 배지 재료의 일부를 대체</div></div>
+      <div class="cell hi"><div class="no">06</div><div class="nm">3D프린팅·바이오플라스틱</div><div class="ds">필라멘트용 분말 — 입도·수분 규격 협의</div></div>
+    </div>
+
+    <div class="tier rise"><b>규격·성적서 확인 후 가능</b><span>용도별 시험성적서를 갖추면 열리는 분야</span></div>
+    <div class="grid16 rise">
+      <div class="cell"><div class="no">07</div><div class="nm">식품용 식이섬유</div><div class="ds">제빵·음료·소스 배합용</div></div>
+      <div class="cell"><div class="no">08</div><div class="nm">펫푸드 원료</div><div class="ds">식이섬유·체중관리 처방식</div></div>
+      <div class="cell"><div class="no">09</div><div class="nm">반려동물 배변·탈취재</div><div class="ds">흡수·냄새 중화 소재</div></div>
+      <div class="cell"><div class="no">10</div><div class="nm">화장품 원료</div><div class="ds">제주산 원물 대량 공급</div></div>
+      <div class="cell"><div class="no">11</div><div class="nm">양식 사료 첨가제</div><div class="ds">항병력 소구 — 어종별 자료 협의</div></div>
+      <div class="cell"><div class="no">12</div><div class="nm">펙틴 추출 원료</div><div class="ds">추출 설비 보유사에 원물 납품</div></div>
+    </div>
+
+    <div class="tier rise"><b>함께 개발할 분야</b><span>공정·연구가 함께 필요한 자리</span></div>
+    <div class="grid16 rise">
+      <div class="cell"><div class="no">13</div><div class="nm">발효 가공식품 소재</div><div class="ds">발효 설비 보유사와 협업</div></div>
+      <div class="cell"><div class="no">14</div><div class="nm">천연 생활화학</div><div class="ds">리모넨 계열 향료·소재</div></div>
+      <div class="cell"><div class="no">15</div><div class="nm">비건 섬유·가죽</div><div class="ds">감귤 셀룰로오스 소재 공동 개발</div></div>
+      <div class="cell"><div class="no">16</div><div class="nm">바이오차·에너지·전극</div><div class="ds">대형 설비 전제 — 장기 검토</div></div>
+    </div>
+  </div></section>
+
+  <section><div class="w">
+    <div class="snum rise">03 — 근거 자료</div>
+    <h2 class="rise">데이터가 확보된 분야는 근거로 말합니다</h2>
+    <p class="sub rise">아래는 공개 가능한 범위의 요약입니다. 상세 자료(배합 가이드·기술부록)는 문의 시 제공합니다.</p>
+    <div class="ev rise">
+      <div class="evc">
+        <h3>축산 사료 — 배합 상한과 사양 성적</h3>
+        <p>한우 비육우 대상 국내 연구에서 감귤부산물 TMR 급여 시 <b>두당 조수입 증가</b>가 보고되었습니다.
+           양돈은 5~15% 범위가 문헌으로 확립되어 있습니다.</p>
+        <p>축종별 배합 상한 가이드를 함께 제공하며, <b>비육 후기 급여 시 지방색 관련 주의사항</b>도 같이 안내합니다.</p>
+        <div class="src">출처 · 정인철 외(2007) 한국식품영양과학회지 / 양승주 외(2006) 동아시아식생활학회지</div>
+      </div>
+      <div class="evc">
+        <h3>양식 사료 — 성장이 아니라 항병력</h3>
+        <p>발효 감귤박 2% 급여 후 병원균을 감염시킨 새우 시험에서 <b>생존율 43.3% → 68.3%</b>로 보고되었습니다.
+           같은 시험에서 <b>성장 지표는 유의차가 없었으므로</b>, 성장 촉진이 아닌 폐사 저감 용도로 안내합니다.</p>
+        <p>국내 넙치·조피볼락 급여 데이터는 <b>현재 확보 중</b>입니다. 어종별 시험은 협의 가능합니다.</p>
+        <div class="src">출처 · 자체 양식사료 기술부록(논문 DOI 포함) · 상세는 문의 시 제공</div>
+      </div>
+      <div class="evc">
+        <h3>펫푸드 — 장 건강 소구 식이섬유</h3>
+        <p>반려견 급여 시험에서 감귤 유래 섬유 배합군의 <b>분변 부티르산이 대조군 대비 크게 증가</b>한 결과가 보고되었습니다.
+           수입 감귤 섬유를 <b>제주산으로 대체</b>하는 자리입니다.</p>
+        <div class="src">기능성 성분 · 헤스페리딘 · 노빌레틴 · 저분자 올리고당 · 펙틴</div>
+      </div>
+      <div class="evc">
+        <h3>농자재·배지 — 공공기관 실증</h3>
+        <p>감귤박을 활용한 <b>토양개량제의 보수성 향상</b>, <b>축사 악취 저감</b>, <b>버섯 배지 일부 대체 시 수량 유지</b>가
+           국가기관 실증으로 보고되었습니다.</p>
+        <div class="src">출처 · 농촌진흥청 발표자료 · 상세 서지는 문의 시 제공</div>
+      </div>
+    </div>
+  </div></section>
+
+  <section><div class="w">
+    <div class="snum rise">04 — 회사 소개</div>
+    <h2 class="rise">제주 산지에서, 약 20년</h2>
+    <p class="sub rise">(주)수창은 제주 산지를 기반으로 농수산 원물 230여 종을 취급해 온 B2B 원료 공급사입니다.
+      산지에 붙어 있다는 것은 <b>물량·시기·규격을 직접 조정할 수 있다</b>는 뜻입니다.
+      감귤박은 겨울에 집중 발생하므로, 연중 공급 계획을 먼저 협의합니다.</p>
+  </div></section>
+
+  <section class="cta" id="a-cta"><div class="w">
+    <div class="snum" style="color:#7fb4d8">05 — 문의</div>
+    <h2>샘플·견적 문의</h2>
+    <p class="sub">관심 분야를 선택해 주시면 해당 분야 자료와 함께 회신드립니다.</p>
+    <form onsubmit="return false">
+      <div><label>회사명</label><input placeholder="(주)○○"></div>
+      <div><label>담당자</label><input placeholder="성함"></div>
+      <div><label>연락처</label><input placeholder="이메일 또는 전화"></div>
+      <div><label>관심 분야</label><select>
+        <option>가축 사료</option><option>펫푸드</option><option>양식 사료</option>
+        <option>제지·포장재</option><option>농자재·배지</option><option>3D프린팅·바이오플라스틱</option>
+        <option>식품 소재</option><option>화장품</option><option>기타</option></select></div>
+      <div class="full"><label>검토 단계</label><select>
+        <option>정보 수집 중</option><option>샘플 테스트 예정</option><option>구매 검토 중</option></select></div>
+      <div class="full"><label>문의 내용</label><textarea rows="4" placeholder="필요 물량·규격·일정 등"></textarea></div>
+      <button class="send">문의 보내기</button>
+    </form>
+  </div></section>
+
+  <footer><div class="w">(주)수창 · 제주특별자치도 · 표시 관련 문구는 관련 법령을 준수합니다. 게재 수치는 출처를 함께 표기합니다.</div></footer>
+</div>
+
+
+<!-- ══════════════════ B안 ══════════════════ -->
+<div class="pane b" id="pane-b">
+
+  <div class="topbar"><div class="w">
+    <div class="logo">(주)수창<span>제주 · 농수산 원료 공급</span></div>
+    <a class="topcta" href="#b-cta">샘플·견적 문의</a>
+  </div></div>
+
+  <div class="hero"><div class="w">
+    <div class="eyebrow rise">제주 감귤 부산물 업사이클 · 건조 감귤박</div>
+    <h1 class="rise">주스를 짜고 남은 것이,<br>다시 원료가 되기까지</h1>
+    <p class="lede rise">제주에서 해마다 <b>5~7만 톤</b>의 감귤박이 나옵니다.
+      저희는 이것을 말리고 빻아 <b>사료·소재·농자재의 원료</b>로 되돌립니다.
+      버리는 데 드는 비용을, 쓰는 값으로 바꾸는 일입니다.</p>
+    <div class="herobtns rise">
+      <a class="btn btn-p" href="#b-cta">샘플·견적 문의</a>
+      <a class="btn btn-s" href="#b-use">활용 분야 16갈래 보기</a>
+    </div>
+  </div></div>
+
+  <div class="flow"><div class="w">
+    <div class="fl rise"><b>감귤 착즙</b><span>제주 산지 가공장</span></div>
+    <div class="fl rise"><b>감귤박 수거</b><span>연 5~7만 톤 발생</span></div>
+    <div class="fl rise"><b>건조·분쇄</b><span>건조 시 약 1만 톤</span></div>
+    <div class="fl rise"><b>원료 공급</b><span>샘플부터 대량까지</span></div>
+  </div></div>
+
+  <section><div class="w">
+    <div class="snum rise">하나</div>
+    <h2 class="rise">먼저, 귤피와 감귤박은 다른 물건입니다</h2>
+    <p class="sub rise">귤피는 껍질을 말린 것이고, 감귤박은 <b>주스를 짜고 남은 것</b>입니다.
+      속껍질과 과육 찌꺼기가 섞여 있고, 짜는 과정에서 성분이 빠져나갑니다.
+      그래서 저희는 <b>착즙 잔여물을 기준으로 한 자료만</b> 근거로 씁니다. 껍질 기준 수치를 인용할 때는 그렇게 밝힙니다.</p>
+    <div class="specs rise">
+      <dl class="spec"><dt>형태</dt><dd>3종<small>건조 원물 · 분말 · 생박(미건조)</small></dl>
+      <dl class="spec"><dt>수분율</dt><dd><span class="tbd">○○% 이하</span><small>실측값 입력 예정</small></dl>
+      <dl class="spec"><dt>입도</dt><dd><span class="tbd">○○ mesh</span><small>사료용·제지용·압출용이 다름</small></dl>
+      <dl class="spec"><dt>포장 단위</dt><dd><span class="tbd">○○ kg</span><small>톤백 / 소포장</small></dl>
+      <dl class="spec"><dt>월 공급량</dt><dd><span class="tbd">○○ 톤</span><small>연중 공급 개월 별도 안내</small></dl>
+      <dl class="spec"><dt>잔류농약·중금속</dt><dd>기준치 이하<small>공인 시험성적서 발급 준비 중</small></dl>
+    </div>
+  </div></section>
+
+  <section id="b-use"><div class="w">
+    <div class="snum rise">둘</div>
+    <h2 class="rise">감귤박이 들어갈 수 있는 열여섯 갈래</h2>
+    <p class="sub rise">분야를 좁히지 않았습니다. 지금 바로 보낼 수 있는 곳부터,
+      규격을 맞추면 되는 곳, 함께 만들어 가야 하는 곳까지 순서대로 적었습니다.</p>
+
+    <div class="tierhead rise"><b>바로 공급 가능</b><span>건조 원물·분말·생박을 그대로</span></div>
+    <div class="list rise">
+      <div class="row"><div class="no">1</div><div class="nm">가축 사료</div><div class="ds">한우·양돈 등 <em>축종별 배합 상한 가이드</em>를 함께 드립니다</div></div>
+      <div class="row"><div class="no">2</div><div class="nm">제지·포장재 원료</div><div class="ds">골판지 원지 배합, 펄프몰드 용기·완충재</div></div>
+      <div class="row"><div class="no">3</div><div class="nm">친환경 농자재</div><div class="ds">토양개량제·유기질비료, 축사 악취저감 — <em>가공 없이 건조 원물 그대로</em></div></div>
+      <div class="row"><div class="no">4</div><div class="nm">곤충 사육 배지</div><div class="ds">동애등에 유충 먹이 — <em>말리기 전 생박</em>이라 단가가 가장 낮습니다</div></div>
+      <div class="row"><div class="no">5</div><div class="nm">버섯 재배 배지</div><div class="ds">기존 배지 재료의 일부를 대체</div></div>
+      <div class="row"><div class="no">6</div><div class="nm">3D프린팅·바이오플라스틱</div><div class="ds">필라멘트용 분말 — <em>입도·수분 규격을 맞춰</em> 연중 같은 품질로</div></div>
+    </div>
+
+    <div class="tierhead rise"><b>규격·성적서 확인 후 가능</b><span>용도별 시험성적서를 갖추면 열리는 자리</span></div>
+    <div class="list rise">
+      <div class="row"><div class="no">7</div><div class="nm">식품용 식이섬유</div><div class="ds">제빵·음료·소스 배합용</div></div>
+      <div class="row"><div class="no">8</div><div class="nm">펫푸드 원료</div><div class="ds">장 건강 소구 식이섬유 · 체중관리 처방식</div></div>
+      <div class="row"><div class="no">9</div><div class="nm">반려동물 배변·탈취재</div><div class="ds">흡수와 냄새 중화 — 먹이는 것이 아니라 까는 것</div></div>
+      <div class="row"><div class="no">10</div><div class="nm">화장품 원료</div><div class="ds">제주산 원물을 대량으로 — <em>제주 원료 요건</em>에 활용</div></div>
+      <div class="row"><div class="no">11</div><div class="nm">양식 사료 첨가제</div><div class="ds">폐사 저감(항병력) 용도 — 어종별 시험 협의</div></div>
+      <div class="row"><div class="no">12</div><div class="nm">펙틴 추출 원료</div><div class="ds">추출 설비를 갖춘 회사에 원물 납품</div></div>
+    </div>
+
+    <div class="tierhead rise"><b>함께 개발할 자리</b><span>공정이나 연구가 함께 필요한 곳</span></div>
+    <div class="list rise">
+      <div class="row"><div class="no">13</div><div class="nm">발효 가공식품 소재</div><div class="ds">발효 설비를 갖춘 회사와 협업</div></div>
+      <div class="row"><div class="no">14</div><div class="nm">천연 생활화학</div><div class="ds">리모넨 계열 향료·소재 — 함량은 검증 후 공개</div></div>
+      <div class="row"><div class="no">15</div><div class="nm">비건 섬유·가죽</div><div class="ds">감귤 셀룰로오스 소재 공동 개발</div></div>
+      <div class="row"><div class="no">16</div><div class="nm">바이오차·에너지·전극</div><div class="ds">대형 설비를 전제로 한 장기 검토</div></div>
+    </div>
+  </div></section>
+
+  <section><div class="w">
+    <div class="snum rise">셋</div>
+    <h2 class="rise">근거로 말합니다</h2>
+    <p class="quote rise">"잘 자란다"가 아니라 "덜 죽는다".<br>
+      데이터가 말하는 만큼만 적습니다.</p>
+    <div class="ev rise">
+      <div class="evc">
+        <h3>축산 사료</h3>
+        <p>한우 비육우 대상 국내 연구에서 감귤부산물 TMR 급여 시 <b>두당 조수입 증가</b>가 보고되었습니다.
+           양돈은 5~15% 범위가 문헌으로 확립되어 있습니다.</p>
+        <p>배합 상한 가이드와 함께, <b>비육 후기 급여 시 지방색 주의</b> 같은 불리한 단서도 같이 드립니다.</p>
+        <div class="src">정인철 외(2007) 한국식품영양과학회지 · 양승주 외(2006) 동아시아식생활학회지</div>
+      </div>
+      <div class="evc">
+        <h3>양식 사료</h3>
+        <p>발효 감귤박 2% 급여 후 병원균을 감염시킨 새우 시험에서 <b>생존율 43.3% → 68.3%</b>.
+           같은 시험에서 <b>성장 지표는 차이가 없었습니다.</b></p>
+        <p>국내 넙치·조피볼락 급여 데이터는 <b>확보 중</b>입니다. 있는 것처럼 쓰지 않습니다.</p>
+        <div class="src">자체 양식사료 기술부록(논문 DOI 포함) · 상세는 문의 시 제공</div>
+      </div>
+      <div class="evc">
+        <h3>펫푸드</h3>
+        <p>반려견 급여 시험에서 감귤 유래 섬유 배합군의 <b>분변 부티르산이 대조군 대비 크게 증가</b>했습니다.
+           수입 감귤 섬유를 <b>제주산으로 대체</b>하는 자리입니다.</p>
+        <div class="src">기능성 성분 · 헤스페리딘 · 노빌레틴 · 저분자 올리고당 · 펙틴</div>
+      </div>
+      <div class="evc">
+        <h3>농자재·배지</h3>
+        <p><b>토양 보수성 향상</b>, <b>축사 악취 저감</b>, <b>버섯 배지 일부 대체 시 수량 유지</b>가
+           국가기관 실증으로 보고되었습니다.</p>
+        <div class="src">농촌진흥청 발표자료 · 상세 서지는 문의 시 제공</div>
+      </div>
+    </div>
+  </div></section>
+
+  <section><div class="w">
+    <div class="snum rise">넷</div>
+    <h2 class="rise">제주 산지에서, 약 20년</h2>
+    <p class="sub rise">(주)수창은 제주 산지를 기반으로 농수산 원물 <b>230여 종</b>을 취급해 온 B2B 원료 공급사입니다.
+      산지에 붙어 있다는 것은 물량과 시기, 규격을 직접 조정할 수 있다는 뜻입니다.
+      감귤박은 겨울에 집중해서 나옵니다. 그래서 <b>연중 공급 계획을 먼저 상의</b>드립니다.</p>
+  </div></section>
+
+  <section class="cta" id="b-cta"><div class="w">
+    <div class="snum rise">다섯</div>
+    <h2 class="rise">샘플·견적 문의</h2>
+    <p class="sub rise">관심 분야를 알려주시면 그 분야 자료와 함께 회신드립니다.</p>
+    <form onsubmit="return false" class="rise">
+      <div><label>회사명</label><input placeholder="(주)○○"></div>
+      <div><label>담당자</label><input placeholder="성함"></div>
+      <div><label>연락처</label><input placeholder="이메일 또는 전화"></div>
+      <div><label>관심 분야</label><select>
+        <option>가축 사료</option><option>펫푸드</option><option>양식 사료</option>
+        <option>제지·포장재</option><option>농자재·배지</option><option>3D프린팅·바이오플라스틱</option>
+        <option>식품 소재</option><option>화장품</option><option>기타</option></select></div>
+      <div class="full"><label>검토 단계</label><select>
+        <option>정보 수집 중</option><option>샘플 테스트 예정</option><option>구매 검토 중</option></select></div>
+      <div class="full"><label>문의 내용</label><textarea rows="4" placeholder="필요 물량·규격·일정 등"></textarea></div>
+      <button class="send">문의 보내기</button>
+    </form>
+  </div></section>
+
+  <footer><div class="w">(주)수창 · 제주특별자치도 · 표시 관련 문구는 관련 법령을 준수하며, 게재 수치는 출처를 함께 표기합니다.</div></footer>
+</div>
+
+
+<!-- ══════════════════ C안 ══════════════════ -->
+<div class="pane c" id="pane-c">
+
+  <div class="topbar"><div class="w">
+    <div class="logo">(주)수창<span>제주 · 농수산 원료 공급</span></div>
+    <a class="topcta" href="#c-cta">샘플·견적 문의</a>
+  </div></div>
+
+  <div class="hero"><div class="w">
+    <div class="bento">
+      <div class="box b-main rise">
+        <div class="eyebrow">건조 감귤박 · UPCYCLED CITRUS PULP</div>
+        <h1>규격이 확정된<br>업사이클 원료,<br>샘플부터 대량까지</h1>
+        <p class="lede">제주에서 주스를 짜고 남은 감귤박을 건조·분쇄해 <b>사료·소재·농자재 원료</b>로 공급합니다.
+          버려지던 부산물을 원료로 되돌리는 <b>자원순환 공급망</b>입니다.</p>
+        <div class="herobtns">
+          <a class="btn btn-p" href="#c-cta">샘플·견적 문의</a>
+          <a class="btn btn-s" href="#c-use">활용 분야 16갈래</a>
+        </div>
+      </div>
+      <div class="box b-side b-dark rise">
+        <div class="stat">5~7만 톤<small>제주 연간 감귤박 발생량<br>건조하면 약 1만 톤</small></div>
+      </div>
+      <div class="box b-third rise"><div class="stat">약 20년<small>제주 산지 기반 B2B 원료 공급</small></div></div>
+      <div class="box b-third rise"><div class="stat">230여 종<small>취급 원물 <span class="tbd">종수 확인</span></small></div></div>
+      <div class="box b-third rise"><div class="stat">16 갈래<small>감귤박이 들어갈 수 있는 업종</small></div></div>
+    </div>
+  </div></div>
+
+  <section><div class="w">
+    <div class="shead rise">
+      <div class="snum">01 · 원료 개요</div>
+      <h2>귤피가 아니라, 감귤박입니다</h2>
+      <p class="sub">귤피는 껍질을 말린 것, 감귤박은 <b>주스를 짜고 남은 것</b>입니다.
+        저희는 착즙 잔여물 기준 자료만 근거로 쓰고, 껍질 기준 수치는 그렇게 밝혀서 씁니다.</p>
+    </div>
+    <div class="specs rise">
+      <dl class="spec"><dt>형태</dt><dd>3종<small>건조 원물 · 분말 · 생박</small></dl>
+      <dl class="spec"><dt>수분율</dt><dd><span class="tbd">○○%</span><small>실측값 입력 예정</small></dl>
+      <dl class="spec"><dt>입도</dt><dd><span class="tbd">○○ mesh</span><small>용도별 상이</small></dl>
+      <dl class="spec"><dt>포장 단위</dt><dd><span class="tbd">○○ kg</span><small>톤백 / 소포장</small></dl>
+      <dl class="spec"><dt>월 공급량</dt><dd><span class="tbd">○○ 톤</span><small>연중 공급 개월 안내</small></dl>
+      <dl class="spec"><dt>샘플</dt><dd><span class="tbd">○○ kg</span><small>조건 문의</small></dl>
+      <dl class="spec"><dt>잔류농약·중금속</dt><dd>기준치 이하<small>성적서 발급 준비 중</small></dl>
+      <dl class="spec"><dt>산지</dt><dd>제주<small>산지 직결 · 시기 조정 가능</small></dl>
+    </div>
+  </div></section>
+
+  <section id="c-use"><div class="w">
+    <div class="shead rise">
+      <div class="snum">02 · 활용 분야</div>
+      <h2>감귤박이 들어갈 수 있는 16갈래</h2>
+      <p class="sub">분야를 좁히지 않고 전부 공개합니다. 진한 카드가 <b>지금 바로 공급 가능한</b> 분야입니다.</p>
+    </div>
+
+    <div class="tierbar rise"><b>바로 공급 가능</b><span>건조 원물·분말·생박을 그대로 배합</span></div>
+    <div class="g16 rise">
+      <div class="card hi"><div class="no">01</div><div class="nm">가축 사료</div><div class="ds">축종별 배합 상한 가이드 제공</div></div>
+      <div class="card hi"><div class="no">02</div><div class="nm">제지·포장재</div><div class="ds">골판지 원지·펄프몰드·완충재</div></div>
+      <div class="card hi"><div class="no">03</div><div class="nm">친환경 농자재</div><div class="ds">토양개량제·악취저감</div></div>
+      <div class="card hi"><div class="no">04</div><div class="nm">곤충 사육 배지</div><div class="ds">생박 그대로 — 건조비 없음</div></div>
+      <div class="card hi"><div class="no">05</div><div class="nm">버섯 재배 배지</div><div class="ds">배지 재료 일부 대체</div></div>
+      <div class="card hi"><div class="no">06</div><div class="nm">3D프린팅·바이오플라스틱</div><div class="ds">필라멘트용 분말 규격 협의</div></div>
+    </div>
+
+    <div class="tierbar rise"><b>규격·성적서 확인 후 가능</b><span>용도별 시험성적서를 갖추면 열리는 분야</span></div>
+    <div class="g16 rise">
+      <div class="card"><div class="no">07</div><div class="nm">식품용 식이섬유</div><div class="ds">제빵·음료·소스 배합</div></div>
+      <div class="card"><div class="no">08</div><div class="nm">펫푸드 원료</div><div class="ds">장 건강 소구·체중관리</div></div>
+      <div class="card"><div class="no">09</div><div class="nm">배변·탈취재</div><div class="ds">흡수·냄새 중화</div></div>
+      <div class="card"><div class="no">10</div><div class="nm">화장품 원료</div><div class="ds">제주산 원물 대량 공급</div></div>
+      <div class="card"><div class="no">11</div><div class="nm">양식 사료 첨가제</div><div class="ds">폐사 저감 용도</div></div>
+      <div class="card"><div class="no">12</div><div class="nm">펙틴 추출 원료</div><div class="ds">추출 설비 보유사에 납품</div></div>
+    </div>
+
+    <div class="tierbar rise"><b>함께 개발할 분야</b><span>공정·연구가 함께 필요한 자리</span></div>
+    <div class="g16 rise">
+      <div class="card"><div class="no">13</div><div class="nm">발효 가공식품 소재</div><div class="ds">발효 설비 보유사와 협업</div></div>
+      <div class="card"><div class="no">14</div><div class="nm">천연 생활화학</div><div class="ds">리모넨 계열 — 검증 후 공개</div></div>
+      <div class="card"><div class="no">15</div><div class="nm">비건 섬유·가죽</div><div class="ds">셀룰로오스 소재 공동 개발</div></div>
+      <div class="card"><div class="no">16</div><div class="nm">바이오차·에너지</div><div class="ds">대형 설비 전제 · 장기</div></div>
+    </div>
+  </div></section>
+
+  <section><div class="w">
+    <div class="shead rise">
+      <div class="snum">03 · 근거 자료</div>
+      <h2>데이터가 확보된 분야는 근거로 말합니다</h2>
+      <p class="sub">공개 가능한 범위의 요약입니다. 상세 자료는 문의 시 제공합니다.</p>
+    </div>
+    <div class="ev rise">
+      <div class="evc">
+        <h3>축산 사료 — 배합 상한과 사양 성적</h3>
+        <p>한우 비육우 국내 연구에서 감귤부산물 TMR 급여 시 <b>두당 조수입 증가</b> 보고. 양돈 5~15% 범위 확립.</p>
+        <p>배합 가이드와 함께 <b>비육 후기 지방색 주의</b> 같은 단서도 같이 드립니다.</p>
+        <div class="src">정인철 외(2007) · 양승주 외(2006)</div>
+      </div>
+      <div class="evc">
+        <h3>양식 사료 — 성장이 아니라 항병력</h3>
+        <p>발효 감귤박 2% 급여 새우 시험에서 <b>생존율 43.3% → 68.3%</b>. 단, <b>성장 지표는 유의차 없음</b>.</p>
+        <p>국내 넙치·조피볼락 데이터는 <b>확보 중</b>입니다.</p>
+        <div class="src">자체 기술부록(논문 DOI 포함) · 문의 시 제공</div>
+      </div>
+      <div class="evc">
+        <h3>펫푸드 — 장 건강 식이섬유</h3>
+        <p>반려견 급여 시험에서 감귤 유래 섬유 배합군의 <b>분변 부티르산 증가</b> 보고. 수입 섬유의 <b>제주산 대체</b>.</p>
+        <div class="src">헤스페리딘 · 노빌레틴 · 저분자 올리고당 · 펙틴</div>
+      </div>
+      <div class="evc">
+        <h3>농자재·배지 — 공공기관 실증</h3>
+        <p><b>토양 보수성 향상</b>, <b>축사 악취 저감</b>, <b>버섯 배지 대체 시 수량 유지</b> 보고.</p>
+        <div class="src">농촌진흥청 발표자료 · 상세 서지 문의 시 제공</div>
+      </div>
+    </div>
+  </div></section>
+
+  <section><div class="w">
+    <div class="shead rise">
+      <div class="snum">04 · 회사 소개</div>
+      <h2>제주 산지에서, 약 20년</h2>
+      <p class="sub">농수산 원물 230여 종을 취급해 온 B2B 원료 공급사입니다. 산지에 붙어 있어
+        물량·시기·규격을 직접 조정합니다. 감귤박은 겨울에 집중 발생하므로 <b>연중 공급 계획을 먼저 협의</b>합니다.</p>
+    </div>
+  </div></section>
+
+  <section id="c-cta"><div class="w">
+    <div class="ctabox rise">
+      <div class="snum" style="color:#a8ccb9">05 · 문의</div>
+      <h2>샘플·견적 문의</h2>
+      <p class="sub">관심 분야를 선택해 주시면 해당 분야 자료와 함께 회신드립니다.</p>
+      <form onsubmit="return false">
+        <div><label>회사명</label><input placeholder="(주)○○"></div>
+        <div><label>담당자</label><input placeholder="성함"></div>
+        <div><label>연락처</label><input placeholder="이메일 또는 전화"></div>
+        <div><label>관심 분야</label><select>
+          <option>가축 사료</option><option>펫푸드</option><option>양식 사료</option>
+          <option>제지·포장재</option><option>농자재·배지</option><option>3D프린팅·바이오플라스틱</option>
+          <option>식품 소재</option><option>화장품</option><option>기타</option></select></div>
+        <div class="full"><label>검토 단계</label><select>
+          <option>정보 수집 중</option><option>샘플 테스트 예정</option><option>구매 검토 중</option></select></div>
+        <div class="full"><label>문의 내용</label><textarea rows="4" placeholder="필요 물량·규격·일정 등"></textarea></div>
+        <button class="send">문의 보내기</button>
+      </form>
+    </div>
+  </div></section>
+
+  <footer><div class="w">(주)수창 · 제주특별자치도 · 표시 관련 문구는 관련 법령을 준수하며, 게재 수치는 출처를 함께 표기합니다.</div></footer>
+</div>
+
+
+<script>
+// 탭 전환
+const btns = document.querySelectorAll('.picker button');
+btns.forEach(b=>b.addEventListener('click',()=>{
+  btns.forEach(x=>x.setAttribute('aria-selected', x===b));
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));
+  document.getElementById('pane-'+b.dataset.t).classList.add('on');
+  window.scrollTo({top:0,behavior:'instant'});
+  observeAll();
+}));
+
+// 스크롤 등장 모션
+let io;
+function observeAll(){
+  if(io) io.disconnect();
+  io = new IntersectionObserver(es=>{
+    es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:.12, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.pane.on .rise').forEach((el,i)=>{
+    el.style.transitionDelay = Math.min(i*40,240)+'ms';
+    io.observe(el);
+  });
+}
+observeAll();
+</script>
+</body>
+</html>
