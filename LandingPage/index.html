@@ -504,8 +504,12 @@ footer b{color:var(--ink2)}
       <input id="f-company" name="company" placeholder="(주)○○" required></div>
     <div class="field"><label for="f-name">담당자 <i>*</i></label>
       <input id="f-name" name="name" placeholder="성함" required></div>
-    <div class="field"><label for="f-contact">연락처 <i>*</i></label>
-      <input id="f-contact" name="contact" placeholder="이메일 또는 전화번호" required></div>
+    <div class="field"><label for="f-email">이메일 <i>*</i></label>
+      <input id="f-email" name="email" type="email" inputmode="email" autocomplete="email"
+        placeholder="hong@company.co.kr" required></div>
+    <div class="field"><label for="f-phone">전화번호</label>
+      <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel"
+        placeholder="선택 · 통화가 편하시면"></div>
     <div class="field"><label for="f-field">관심 분야</label>
       <select id="f-field" name="field">
         <option>가축 사료</option>
@@ -522,7 +526,7 @@ footer b{color:var(--ink2)}
         <option>ESG·지속가능 소재 검토</option>
         <option>기타 / 아직 미정</option>
       </select></div>
-    <div class="field full"><label for="f-stage">검토 단계</label>
+    <div class="field"><label for="f-stage">검토 단계</label>
       <select id="f-stage" name="stage">
         <option>정보 수집 중</option>
         <option>샘플 테스트 예정</option>
@@ -540,7 +544,7 @@ footer b{color:var(--ink2)}
     <div class="agree">
       <input type="checkbox" id="f-agree" name="agree">
       <label for="f-agree">문의 회신을 위한 <b>개인정보 수집·이용</b>에 동의합니다.
-        (수집 항목: 회사명·담당자명·연락처 / 목적: 문의 회신 및 자료 제공 / 보유 기간: 문의 처리 후 1년)</label>
+        (수집 항목: 회사명·담당자명·이메일·전화번호 / 목적: 문의 회신 및 자료 제공 / 보유 기간: 문의 처리 후 1년)</label>
     </div>
 
     <div class="formmsg" id="formmsg"></div>
@@ -577,12 +581,11 @@ document.querySelectorAll('.rise').forEach((el,i)=>{
    구글 Apps Script가 ①구글 시트 저장 ②담당자 알림 메일
    ③신청자 자동회신 메일을 한 번에 처리합니다.
 
-   ▶ 설치 후 받은 웹앱 주소를 아래 GAS_URL 에 붙여넣으세요.
+   ▶ 웹앱 주소를 새로 발급받았다면 아래 GAS_URL 만 바꾸면 됩니다.
      (설치 방법: 같은 폴더의 「📮 문의폼 설치안내.md」)
-     비워 두면 메일 앱을 여는 방식으로 자동 전환됩니다.
    ═══════════════════════════════════════════════════ */
 const GAS_URL  = 'https://script.google.com/macros/s/AKfycbz4K_URR_jx6gxvlX0nqqOkaSpA_kPAsgzk5wECiwE7Lr8xkjom2ifCIJauzdnlifpK/exec';
-const MAIL_TO  = 'suchang.marketing@gmail.com'; // 위가 비었을 때 쓰는 예비 수단
+const MAIL_TO  = 'suchang.marketing@gmail.com'; // 전송 실패 시 안내할 담당자 주소
 
 const form    = document.getElementById('inquiry');
 const msgBox  = document.getElementById('formmsg');
@@ -599,8 +602,12 @@ form.addEventListener('submit', async e => {
   e.preventDefault();
   const d = Object.fromEntries(new FormData(form).entries());
 
-  if(!d.company?.trim() || !d.name?.trim() || !d.contact?.trim()){
-    showMsg('회사명 · 담당자 · 연락처를 입력해 주세요.', true);
+  if(!d.company?.trim() || !d.name?.trim() || !d.email?.trim()){
+    showMsg('회사명 · 담당자 · 이메일을 입력해 주세요.', true);
+    return;
+  }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email.trim())){
+    showMsg('이메일 주소를 다시 확인해 주세요. (예: hong@company.co.kr)', true);
     return;
   }
   if(!d.agree){
@@ -609,17 +616,12 @@ form.addEventListener('submit', async e => {
   }
 
   const payload = {
-    company: d.company, name: d.name, contact: d.contact,
+    company: d.company, name: d.name,
+    email: d.email, phone: d.phone || '',
     field: d.field, stage: d.stage, message: d.message,
     website: d.website || '',          // 봇 차단용
     source: location.hostname || '소개페이지'
   };
-
-  /* 웹앱 주소가 아직 없으면 메일 앱으로 대체 */
-  if(!GAS_URL){
-    openMailApp(payload);
-    return;
-  }
 
   sendBtn.disabled = true;
   sendBtn.textContent = '보내는 중…';
@@ -639,29 +641,12 @@ form.addEventListener('submit', async e => {
     }
   }catch(err){
     console.error(err);
-    showMsg('접수 중 문제가 생겼습니다. 메일 작성 창을 열어 드릴 테니 그대로 보내주세요.', true);
-    setTimeout(() => openMailApp(payload), 900);
+    showMsg('접수 중 문제가 생겼습니다. 번거로우시겠지만 ' + MAIL_TO + ' 로 메일 주시면 바로 회신드리겠습니다.', true);
   }finally{
     sendBtn.disabled = false;
     sendBtn.textContent = '문의 보내기';
   }
 });
-
-/* 예비 수단 — 메일 앱 열기 */
-function openMailApp(d){
-  const body =
-    `회사명: ${d.company}\n` +
-    `담당자: ${d.name}\n` +
-    `연락처: ${d.contact}\n` +
-    `관심 분야: ${d.field}\n` +
-    `검토 단계: ${d.stage}\n\n` +
-    `문의 내용:\n${d.message || '-'}\n`;
-
-  showMsg('메일 작성 창이 열립니다. 열리지 않으면 ' + MAIL_TO + ' 로 보내주세요.');
-  window.location.href = 'mailto:' + MAIL_TO +
-    '?subject=' + encodeURIComponent(`[감귤 업사이클 원료 문의] ${d.company} ${d.name}`) +
-    '&body=' + encodeURIComponent(body);
-}
 </script>
 </body>
 </html>

@@ -17,7 +17,10 @@ const SHEET_NAME   = '문의접수';                      // 저장될 시트 �
 const REPLY_HOURS  = '영업일 기준 1~2일';             // 자동회신에 안내할 회신 소요 시간
 const TIMEZONE     = 'Asia/Seoul';
 
-const HEADERS = ['접수일시','회사명','담당자','연락처','관심 분야','검토 단계','문의 내용','자동회신','유입 경로'];
+const HEADERS = ['접수일시','회사명','담당자','이메일','전화번호','관심 분야','검토 단계','문의 내용','자동회신','유입 경로'];
+
+const COL_MESSAGE = 8;   // '문의 내용' 칸 위치 (HEADERS 순서 바꾸면 같이 고칠 것)
+const COL_REPLY   = 9;   // '자동회신' 칸 위치
 
 
 // ══════ 문의 접수 (랜딩페이지에서 호출) ══════
@@ -32,16 +35,24 @@ function doPost(e) {
     // 봇 차단 — 사람 눈에 안 보이는 칸(website)에 값이 있으면 봇
     if (data.website) return jsonOut({ ok: true });
 
+    // 예전 페이지(연락처 한 칸짜리)에서 온 문의도 받아준다
+    const email = trim(data.email) || (isEmail(data.contact) ? trim(data.contact) : '');
+    const phone = trim(data.phone) || (isEmail(data.contact) ? '' : trim(data.contact));
+
     // 필수값 확인
-    if (!trim(data.company) || !trim(data.name) || !trim(data.contact)) {
-      return jsonOut({ ok: false, error: '회사명·담당자·연락처는 필수입니다.' });
+    if (!trim(data.company) || !trim(data.name) || !email) {
+      return jsonOut({ ok: false, error: '회사명·담당자·이메일은 필수입니다.' });
+    }
+    if (!isEmail(email)) {
+      return jsonOut({ ok: false, error: '이메일 주소 형식이 올바르지 않습니다.' });
     }
 
     const record = {
       time:    Utilities.formatDate(new Date(), TIMEZONE, 'yyyy-MM-dd HH:mm:ss'),
       company: trim(data.company),
       name:    trim(data.name),
-      contact: trim(data.contact),
+      email:   email,
+      phone:   phone || '-',
       field:   trim(data.field)   || '-',
       stage:   trim(data.stage)   || '-',
       message: trim(data.message) || '-',
@@ -56,15 +67,13 @@ function doPost(e) {
     try { notifyAdmin(record); adminSent = true; }
     catch (err) { console.error('담당자 알림 실패: ' + err); }
 
-    // 3) 신청자 자동회신 — 연락처가 이메일 형식일 때만
+    // 3) 신청자 자동회신
     let replySent = false;
-    if (isEmail(record.contact)) {
-      try { sendAutoReply(record); replySent = true; }
-      catch (err) { console.error('자동회신 실패: ' + err); }
-    }
+    try { sendAutoReply(record); replySent = true; }
+    catch (err) { console.error('자동회신 실패: ' + err); }
 
     // 자동회신 발송 여부를 시트 마지막 행에 기록
-    markAutoReply(replySent ? '발송' : (isEmail(record.contact) ? '실패' : '해당없음(전화번호)'));
+    markAutoReply(replySent ? '발송' : '실패');
 
     return jsonOut({ ok: true, autoReply: replySent, adminNotified: adminSent });
 
@@ -93,18 +102,19 @@ function saveToSheet(r) {
     const head = sheet.getRange(1, 1, 1, HEADERS.length);
     head.setFontWeight('bold').setBackground('#2c6249').setFontColor('#ffffff');
     sheet.setFrozenRows(1);
-    sheet.setColumnWidth(1, 150); // 접수일시
-    sheet.setColumnWidth(2, 160); // 회사명
-    sheet.setColumnWidth(7, 380); // 문의 내용
+    sheet.setColumnWidth(1, 150);            // 접수일시
+    sheet.setColumnWidth(2, 160);            // 회사명
+    sheet.setColumnWidth(4, 200);            // 이메일
+    sheet.setColumnWidth(COL_MESSAGE, 380);  // 문의 내용
   }
 
   sheet.appendRow([
-    r.time, r.company, r.name, r.contact,
+    r.time, r.company, r.name, r.email, r.phone,
     r.field, r.stage, r.message, '처리중', r.source
   ]);
 
   // 문의 내용 칸은 줄바꿈 보이게
-  sheet.getRange(sheet.getLastRow(), 7).setWrap(true);
+  sheet.getRange(sheet.getLastRow(), COL_MESSAGE).setWrap(true);
 }
 
 
@@ -113,7 +123,7 @@ function markAutoReply(status) {
   try {
     const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
     if (sheet && sheet.getLastRow() > 1) {
-      sheet.getRange(sheet.getLastRow(), 8).setValue(status);
+      sheet.getRange(sheet.getLastRow(), COL_REPLY).setValue(status);
     }
   } catch (err) {
     console.error('자동회신 상태 기록 실패: ' + err);
@@ -131,21 +141,21 @@ function notifyAdmin(r) {
     '접수일시 : ' + r.time + '\n' +
     '회사명   : ' + r.company + '\n' +
     '담당자   : ' + r.name + '\n' +
-    '연락처   : ' + r.contact + '\n' +
+    '이메일   : ' + r.email + '\n' +
+    '전화번호 : ' + r.phone + '\n' +
     '관심 분야 : ' + r.field + '\n' +
     '검토 단계 : ' + r.stage + '\n' +
     '────────────────────────────\n' +
     '문의 내용\n' + r.message + '\n' +
     '────────────────────────────\n' +
-    (isEmail(r.contact)
-      ? '※ 신청자에게 접수 확인 메일이 자동 발송되었습니다.\n※ 이 메일에 그대로 [답장]하면 신청자에게 바로 갑니다.\n'
-      : '※ 연락처가 전화번호라 자동회신은 발송되지 않았습니다. 전화로 연락 바랍니다.\n') +
+    '※ 신청자에게 접수 확인 메일이 자동 발송되었습니다.\n' +
+    '※ 이 메일에 그대로 [답장]하면 신청자에게 바로 갑니다.\n' +
     '\n문의 내역 전체는 구글 시트에서 확인하실 수 있습니다.';
 
-  const options = { name: COMPANY_NAME + ' 문의 접수' };
-  if (isEmail(r.contact)) options.replyTo = r.contact;   // 답장하면 신청자에게 바로 감
-
-  MailApp.sendEmail(ADMIN_EMAIL, subject, body, options);
+  MailApp.sendEmail(ADMIN_EMAIL, subject, body, {
+    name: COMPANY_NAME + ' 문의 접수',
+    replyTo: r.email                     // 답장하면 신청자에게 바로 감
+  });
 }
 
 
@@ -163,7 +173,8 @@ function sendAutoReply(r) {
     '─────────────────────\n' +
     '회사명   : ' + r.company + '\n' +
     '담당자   : ' + r.name + '\n' +
-    '연락처   : ' + r.contact + '\n' +
+    '이메일   : ' + r.email + '\n' +
+    '전화번호 : ' + r.phone + '\n' +
     '관심 분야 : ' + r.field + '\n' +
     '검토 단계 : ' + r.stage + '\n' +
     '문의 내용 : ' + r.message + '\n' +
@@ -179,7 +190,7 @@ function sendAutoReply(r) {
     '─────────────────────\n' +
     '※ 이 메일은 문의 접수 확인을 위해 자동으로 발송되었습니다.';
 
-  MailApp.sendEmail(r.contact, subject, body, {
+  MailApp.sendEmail(r.email, subject, body, {
     name: COMPANY_NAME,
     replyTo: ADMIN_EMAIL
   });
@@ -205,7 +216,8 @@ function 테스트_문의보내기() {
       contents: JSON.stringify({
         company: '테스트상사',
         name:    '홍길동',
-        contact: ADMIN_EMAIL,          // 본인에게 자동회신이 오는지 확인
+        email:   ADMIN_EMAIL,          // 본인에게 자동회신이 오는지 확인
+        phone:   '010-0000-0000',
         field:   '가축 사료',
         stage:   '정보 수집 중',
         message: '설치가 잘 되었는지 확인하는 시험 문의입니다.',
