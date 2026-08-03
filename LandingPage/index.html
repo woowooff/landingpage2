@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>감귤 업사이클 원료 — (주)수창 · 제주 자원순환</title>
+<meta name="description" content="제주에서 해마다 5~7만 톤 나오는 감귤 자원을 규격화된 산업 원료로 순환시킵니다. 사료·소재·농자재 등 16개 분야, 샘플부터 대량까지. ESG·지속가능 소재 검토 문의 환영.">
+<meta property="og:title" content="감귤 업사이클 원료 — (주)수창">
+<meta property="og:description" content="제주 감귤 자원을 산업의 원료로 순환시키는 업사이클 공급망.">
+<meta property="og:type" content="website">
+<style>
+/* ═══════════════════════════════════════════════
+   (주)수창 — 감귤박 업사이클 원료 소개페이지
+   디자인: 제주 산지형 (에디토리얼) · 업사이클/ESG 중심
+   색   : 종이색 #f6f3ec / 딥그린 #2c6249 / 감귤 #8f5a12
+   폰트 : 제목 명조(Nanum Myeongjo→바탕) / 본문 고딕
+   ═══════════════════════════════════════════════ */
+
+:root{
+  --paper:#f4f2ea; --card:#fffdf8; --ink:#1f231f; --ink2:#474e46; --ink3:#79806f;
+  --rule:#d9dbcc; --rule2:#e7e8dc; --green:#2c6249; --green-d:#1e4a35; --green-l:#eaf0ea;
+  --acc:#8f5a12; --sun:#e0a13a;
+  --serif:"Nanum Myeongjo","Batang","바탕",Georgia,serif;
+  --sans:"Malgun Gothic","맑은 고딕","Apple SD Gothic Neo",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+     font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased}
+img{max-width:100%}
+a{color:inherit}
+.w{max-width:1000px;margin:0 auto;padding:0 26px}
+
+/* 미확정 실측값 — 값이 확정되면 이 span만 숫자로 교체 */
+.tbd{background:#ffeec2;color:#7a5a00;border-radius:2px;padding:0 6px;
+     font-size:.86em;font-weight:700;white-space:nowrap}
+
+.rise{opacity:0;transform:translateY(18px);
+      transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.3,1)}
+.rise.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rise{opacity:1;transform:none;transition:none}
+  html{scroll-behavior:auto}}
+
+/* ── 상단바 ── */
+.topbar{border-bottom:1px solid var(--rule);background:rgba(244,242,234,.93);
+        backdrop-filter:blur(8px);position:sticky;top:0;z-index:50}
+.topbar .w{display:flex;align-items:center;height:66px;gap:14px}
+.logo{font-family:var(--serif);font-size:19px;font-weight:700;letter-spacing:.02em;text-decoration:none}
+.logo span{font-family:var(--sans);font-size:12px;color:var(--ink3);margin-left:10px;
+           letter-spacing:.04em;font-weight:400}
+.topnav{margin-left:auto;display:flex;align-items:center;gap:22px}
+.topnav a.nav{font-size:13.5px;color:var(--ink2);text-decoration:none;transition:.2s}
+.topnav a.nav:hover{color:var(--green)}
+.topcta{font-size:13px;font-weight:700;text-decoration:none;color:var(--green);
+        border:1px solid var(--green);padding:9px 16px;border-radius:2px;transition:.2s;white-space:nowrap}
+.topcta:hover{background:var(--green);color:#fff}
+@media(max-width:760px){.topnav a.nav{display:none}}
+
+/* ── 히어로 ── */
+.hero{padding:100px 0 88px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;left:-180px;bottom:-200px;width:520px;height:520px;
+  border-radius:50%;background:radial-gradient(circle at 50% 50%,#cfe0d2 0%,#dfe9dd 45%,transparent 72%);
+  opacity:.75;pointer-events:none}
+.hero::after{content:"";position:absolute;right:-150px;top:-110px;width:470px;height:470px;
+  border-radius:50%;background:radial-gradient(circle at 38% 38%,#f6d7a2 0%,#efc684 46%,transparent 72%);
+  opacity:.45;pointer-events:none;animation:float 16s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(-16px,18px)}}
+.hero>.w{position:relative}
+.badge{display:inline-flex;align-items:center;gap:9px;font-size:12px;letter-spacing:.1em;
+  color:var(--green);background:var(--green-l);border:1px solid #c5d8c8;
+  padding:7px 14px;border-radius:100px;margin-bottom:24px;font-weight:700}
+.badge .dot{width:7px;height:7px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 0 4px rgba(44,98,73,.14)}
+h1{font-family:var(--serif);font-size:clamp(33px,5.2vw,54px);line-height:1.32;font-weight:700;
+   letter-spacing:-.01em;margin:0 0 26px;max-width:18ch}
+h1 em{font-style:normal;color:var(--green)}
+.lede{font-size:18px;color:var(--ink2);max-width:58ch;margin:0}
+.lede b{color:var(--ink)}
+.herobtns{display:flex;gap:12px;flex-wrap:wrap;margin-top:38px}
+.btn{font-size:14.5px;font-weight:700;text-decoration:none;padding:14px 28px;border-radius:2px;
+     display:inline-block;transition:.22s;border:1px solid transparent}
+.btn-p{background:var(--green);color:#fff}
+.btn-p:hover{background:var(--green-d);transform:translateY(-2px);box-shadow:0 8px 22px rgba(44,98,73,.26)}
+.btn-s{border-color:var(--rule);color:var(--ink2);background:rgba(255,253,248,.6)}
+.btn-s:hover{border-color:var(--ink3);transform:translateY(-2px)}
+
+/* ── 순환 고리 띠 ── */
+.cycle{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);background:var(--card)}
+.cycle .w{padding-top:34px;padding-bottom:34px}
+.cyc-t{font-size:12px;letter-spacing:.14em;color:var(--acc);font-weight:700;margin-bottom:20px}
+.ring{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;align-items:stretch}
+.st{position:relative;padding:16px 16px 16px 18px;background:var(--paper);
+    border:1px solid var(--rule2);border-radius:3px}
+.st .k{font-size:11px;letter-spacing:.1em;color:var(--ink3);margin-bottom:6px}
+.st b{display:block;font-size:14.5px;margin-bottom:3px}
+.st span{font-size:12.5px;color:var(--ink3);line-height:1.5;display:block}
+.st.hi{background:var(--green-l);border-color:#c5d8c8}
+.st.hi b{color:var(--green)}
+.st.loop{background:transparent;border-style:dashed;border-color:#c3c9b6;
+         display:flex;flex-direction:column;justify-content:center}
+.st.loop b{color:var(--acc)}
+@media(max-width:900px){.ring{grid-template-columns:1fr 1fr}}
+
+/* ── 섹션 공통 ── */
+section{padding:88px 0}
+section+section{border-top:1px solid var(--rule)}
+.snum{font-size:12px;letter-spacing:.12em;color:var(--acc);font-weight:700;margin-bottom:10px}
+h2{font-family:var(--serif);font-size:clamp(24px,3.1vw,33px);font-weight:700;line-height:1.42;
+   margin:0 0 14px;letter-spacing:-.01em}
+.sub{color:var(--ink2);max-width:62ch;margin:0 0 40px;font-size:16px}
+.sub b{color:var(--ink)}
+
+/* ── 자원순환/ESG ── */
+.esg{background:var(--green);color:#e9f1eb}
+.esg h2{color:#fff}
+.esg .snum{color:#a9d3bf}
+.esg .sub{color:#c3ded1}
+.esg .sub b{color:#fff}
+.esg-g{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.esg-c{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.17);
+       border-radius:3px;padding:26px;transition:.22s}
+.esg-c:hover{background:rgba(255,255,255,.1);transform:translateY(-3px)}
+.esg-c .n{font-family:var(--serif);font-size:29px;font-weight:700;color:#fff;line-height:1.25;
+          margin-bottom:12px}
+.esg-c h3{font-size:15.5px;margin:0 0 9px;color:#fff;font-weight:700}
+.esg-c p{margin:0;font-size:14px;color:#c3ded1;line-height:1.7}
+.esg-note{margin-top:26px;font-size:13.5px;color:#a9d3bf;max-width:70ch;
+          border-top:1px solid rgba(255,255,255,.17);padding-top:20px}
+.esg-note b{color:#fff}
+@media(max-width:820px){.esg-g{grid-template-columns:1fr}}
+
+/* ── 원료 개요 ── */
+.forms{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:34px}
+.form-c{background:var(--card);border:1px solid var(--rule);border-radius:3px;padding:24px;transition:.22s}
+.form-c:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(31,35,31,.07)}
+.form-c .t{font-family:var(--serif);font-size:19px;font-weight:700;margin-bottom:8px}
+.form-c .d{font-size:13.5px;color:var(--ink2);line-height:1.65}
+.form-c .u{font-size:12.5px;color:var(--ink3);border-top:1px solid var(--rule2);
+           margin-top:14px;padding-top:11px}
+@media(max-width:820px){.forms{grid-template-columns:1fr}}
+
+.spectable{background:var(--card);border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{text-align:left;padding:15px 22px;border-top:1px solid var(--rule2);vertical-align:top}
+thead th{font-size:12px;letter-spacing:.05em;color:var(--ink3);font-weight:700;
+         background:var(--paper);border-top:0}
+tbody td:first-child{font-weight:700;width:170px}
+td.note{color:var(--ink3);font-size:13.5px}
+@media(max-width:700px){th:last-child,td:last-child{display:none}tbody td:first-child{width:130px}}
+
+/* ── 활용 분야 ── */
+.tierhead{display:flex;align-items:baseline;gap:12px;margin:0 0 16px;flex-wrap:wrap}
+.tierhead b{font-family:var(--serif);font-size:19px}
+.tierhead span{font-size:13px;color:var(--ink3)}
+.list{background:var(--card);border:1px solid var(--rule);border-radius:3px;overflow:hidden;margin-bottom:38px}
+.row{display:grid;grid-template-columns:36px 200px 1fr;gap:18px;padding:17px 24px;
+     border-top:1px solid var(--rule2);transition:background .22s}
+.row:first-child{border-top:0}
+.row:hover{background:#f8f9f3}
+.row .no{font-family:var(--serif);font-size:15px;color:var(--ink3);font-variant-numeric:tabular-nums}
+.row .nm{font-weight:700;font-size:15.5px;letter-spacing:-.01em;line-height:1.5}
+.row .ds{font-size:13.5px;color:var(--ink2);line-height:1.65}
+.row .ds em{font-style:normal;color:var(--green);font-weight:700}
+@media(max-width:760px){.row{grid-template-columns:26px 1fr;gap:8px 12px;padding:16px 18px}
+  .row .ds{grid-column:2}}
+
+/* ── 근거 ── */
+.quote{font-family:var(--serif);font-size:20px;line-height:1.8;color:var(--ink);
+       border-left:2px solid var(--acc);padding:8px 0 8px 24px;max-width:56ch;margin:0 0 38px}
+.ev{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.evc{background:var(--card);border:1px solid var(--rule);border-radius:3px;padding:28px;transition:.22s}
+.evc:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(31,35,31,.07)}
+.evc h3{font-family:var(--serif);font-size:19px;margin:0 0 14px;font-weight:700}
+.evc p{margin:0 0 12px;font-size:14.5px;color:var(--ink2)}
+.evc p:last-of-type{margin-bottom:0}
+.evc b{color:var(--ink)}
+.evc .src{font-size:12px;color:var(--ink3);border-top:1px solid var(--rule2);
+          padding-top:13px;margin-top:16px;line-height:1.6}
+.evnote{margin-top:24px;font-size:13.5px;color:var(--ink3);max-width:68ch;line-height:1.8}
+@media(max-width:760px){.ev{grid-template-columns:1fr}}
+
+/* ── 회사 소개 ── */
+.co{display:grid;grid-template-columns:1.15fr 1fr;gap:44px;align-items:start}
+.co p{margin:0 0 16px;color:var(--ink2)}
+.co p b{color:var(--ink)}
+.costat{background:var(--card);border:1px solid var(--rule);border-radius:3px}
+.costat dl{margin:0;padding:20px 24px;border-top:1px solid var(--rule2);display:flex;
+           align-items:baseline;gap:16px}
+.costat dl:first-child{border-top:0}
+.costat dt{font-size:12.5px;color:var(--ink3);width:96px;flex:none}
+.costat dd{margin:0;font-family:var(--serif);font-size:21px;font-weight:700;letter-spacing:-.01em}
+.costat dd small{font-family:var(--sans);font-size:12.5px;color:var(--ink3);font-weight:400;
+                 display:block;letter-spacing:0;margin-top:3px;line-height:1.5}
+@media(max-width:820px){.co{grid-template-columns:1fr;gap:30px}}
+
+/* ── 문의 ── */
+.cta{background:var(--green-d);color:#e9f1eb}
+.cta h2{color:#fff}
+.cta .snum{color:#a9d3bf}
+.cta .sub{color:#c3ded1}
+.cta .sub b{color:#fff}
+form{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:740px}
+.field label{display:block;font-size:12.5px;color:#a9d3bf;margin-bottom:7px}
+.field label i{font-style:normal;color:#ffd9a0}
+input,select,textarea{width:100%;font-family:inherit;font-size:15px;padding:13px 14px;
+  border:1px solid #38684f;background:#215540;color:#fff;border-radius:2px;transition:.2s}
+input:focus,select:focus,textarea:focus{outline:0;border-color:#a9d3bf;background:#276048}
+input::placeholder,textarea::placeholder{color:#7cab92}
+select option{color:#1f231f;background:#fff}
+.full{grid-column:1/-1}
+button.send{grid-column:1/-1;background:#fffdf8;color:var(--green);border:0;font-weight:800;
+  font-size:15.5px;padding:17px;border-radius:2px;cursor:pointer;font-family:inherit;transition:.2s}
+button.send:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.2)}
+.formnote{grid-column:1/-1;font-size:12.5px;color:#a9d3bf;margin:0}
+.formmsg{grid-column:1/-1;font-size:14px;color:#fff;background:#215540;border:1px solid #38684f;
+         padding:14px 16px;border-radius:2px;display:none}
+.formmsg.on{display:block}
+@media(max-width:700px){form{grid-template-columns:1fr}}
+
+footer{padding:46px 0;font-size:13px;color:var(--ink3);border-top:1px solid var(--rule);line-height:1.8}
+footer b{color:var(--ink2)}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="w">
+  <a class="logo" href="#top">(주)수창<span>제주 · 자원순환 원료 공급</span></a>
+  <nav class="topnav">
+    <a class="nav" href="#esg">자원순환</a>
+    <a class="nav" href="#material">원료 규격</a>
+    <a class="nav" href="#use">활용 분야</a>
+    <a class="nav" href="#evidence">근거 자료</a>
+    <a class="topcta" href="#contact">샘플·견적 문의</a>
+  </nav>
+</div></div>
+
+<!-- ══════════ 히어로 ══════════ -->
+<div class="hero" id="top"><div class="w">
+  <div class="badge rise"><span class="dot"></span>UPCYCLED MATERIAL · 제주 감귤 자원순환</div>
+  <h1 class="rise">제주 감귤 자원을,<br><em>산업의 원료</em>로 순환시킵니다</h1>
+  <p class="lede rise">제주에서 해마다 <b>5~7만 톤</b> 나오는 감귤 자원을
+    수거·건조·규격화해 <b>16개 산업 분야의 원료</b>로 공급합니다.
+    쓰임을 다한 자원이 다시 산업으로 돌아가는 <b>자원순환(업사이클) 공급망</b>입니다.</p>
+  <div class="herobtns rise">
+    <a class="btn btn-p" href="#contact">샘플·견적 문의</a>
+    <a class="btn btn-s" href="#use">활용 분야 16갈래 보기</a>
+  </div>
+</div></div>
+
+<!-- ══════════ 순환 고리 ══════════ -->
+<div class="cycle"><div class="w">
+  <div class="cyc-t rise">순환 구조 — 자원이 다시 원료가 되는 다섯 단계</div>
+  <div class="ring">
+    <div class="st rise"><div class="k">01</div><b>제주 감귤 가공</b><span>착즙·가공 공정에서 발생</span></div>
+    <div class="st rise"><div class="k">02</div><b>수거</b><span>연 5~7만 톤 규모의 순환 자원</span></div>
+    <div class="st hi rise"><div class="k">03</div><b>건조·분쇄·규격화</b><span>수분·입도를 용도에 맞춰 표준화</span></div>
+    <div class="st hi rise"><div class="k">04</div><b>산업 원료로 공급</b><span>사료·소재·농자재 16개 분야</span></div>
+    <div class="st loop rise"><div class="k">↻</div><b>다시 제품으로</b><span>자원이 산업으로 돌아가는 구조</span></div>
+  </div>
+</div></div>
+
+<!-- ══════════ 01 자원순환 / ESG ══════════ -->
+<section class="esg" id="esg"><div class="w">
+  <div class="snum rise">하나</div>
+  <h2 class="rise">왜 업사이클 원료인가</h2>
+  <p class="sub rise">저희가 파는 것은 원료이지만, 함께 만들어지는 것은 <b>순환 구조</b>입니다.
+    ESG·지속가능 소재를 검토하시는 담당자를 위해, 저희가 <b>실제로 증명할 수 있는 것만</b> 적었습니다.</p>
+
+  <div class="esg-g rise">
+    <div class="esg-c">
+      <div class="n">연 5~7만 톤</div>
+      <h3>규모 있는 순환 자원</h3>
+      <p>제주에서 해마다 나오는 감귤 자원을 산업 원료로 규격화합니다.
+        건조 기준으로 약 1만 톤 규모의 자원이 다시 산업으로 들어갑니다.</p>
+    </div>
+    <div class="esg-c">
+      <div class="n">수입 대체</div>
+      <h3>국내산으로 바꾸는 자리</h3>
+      <p>감귤 유래 섬유·소재는 그동안 상당 부분 수입 원료가 채워 왔습니다.
+        같은 자리를 <b>제주산 원료</b>로 바꾸면 원료 이력과 공급 거리가 함께 짧아집니다.</p>
+    </div>
+    <div class="esg-c">
+      <div class="n">단일 산지</div>
+      <h3>추적 가능한 원료</h3>
+      <p>제주 단일 산지에서 나오는 원료이므로 <b>산지·시기·공급 이력</b>을 확인해 드릴 수 있습니다.
+        귀사의 지속가능성 보고에 필요한 증빙 자료를 함께 제공합니다.</p>
+    </div>
+  </div>
+
+  <p class="esg-note rise">
+    <b>수치에 관하여.</b> 탄소 저감량처럼 <b>산정 기준이 필요한 환경 수치는 표기하지 않습니다.</b>
+    귀사의 산정 기준(범위·계수)에 맞춰 <b>공급 이력·물량·산지 증빙</b>을 제공하는 방식이 정확하다고 보기 때문입니다.
+    필요하신 자료 형식을 알려주시면 그에 맞춰 준비하겠습니다.
+  </p>
+</div></section>
+
+<!-- ══════════ 02 원료 개요 ══════════ -->
+<section id="material"><div class="w">
+  <div class="snum rise">둘</div>
+  <h2 class="rise">어떤 형태로, 어떤 규격으로 나가는가</h2>
+  <p class="sub rise">용도에 따라 <b>세 가지 형태</b>로 나갑니다. 사료용·제지용·압출용은 요구 입도가 서로 다르므로,
+    필요한 규격을 알려주시면 그에 맞춰 조정합니다.</p>
+
+  <div class="forms rise">
+    <div class="form-c">
+      <div class="t">건조 원물</div>
+      <div class="d">말려서 그대로 배합에 넣는 형태입니다. 보관과 운송이 가장 안정적입니다.</div>
+      <div class="u">사료 · 농자재 · 배지</div>
+    </div>
+    <div class="form-c">
+      <div class="t">분말</div>
+      <div class="d">건조 후 요구 입도로 분쇄합니다. 압출·성형 공정에 바로 투입할 수 있습니다.</div>
+      <div class="u">제지·포장재 · 바이오플라스틱 · 식품 소재</div>
+    </div>
+    <div class="form-c">
+      <div class="t">생박 (미건조)</div>
+      <div class="d">건조 공정을 거치지 않고 공급합니다. 건조 에너지가 들지 않아 단가가 가장 낮습니다.</div>
+      <div class="u">곤충 사육 배지 등 · 운송 거리 협의 필요</div>
+    </div>
+  </div>
+
+  <div class="spectable rise">
+    <table>
+      <thead><tr><th>항목</th><th>규격</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr><td>수분율</td><td><span class="tbd">○○% 이하</span></td><td class="note">형태별 상이 · 실측값 기준</td></tr>
+        <tr><td>입도</td><td><span class="tbd">○○ mesh</span></td><td class="note">사료용·제지용·압출용이 각각 다름</td></tr>
+        <tr><td>포장 단위</td><td><span class="tbd">○○ kg</span></td><td class="note">톤백 / 소포장</td></tr>
+        <tr><td>월 공급량</td><td><span class="tbd">○○ 톤</span></td><td class="note">연중 공급 개월은 협의 시 안내</td></tr>
+        <tr><td>샘플 조건</td><td><span class="tbd">○○ kg</span></td><td class="note">문의 시 안내</td></tr>
+        <tr><td>잔류농약·중금속</td><td>기준치 이하</td><td class="note">용도별 공인 시험성적서 발급 준비 중</td></tr>
+        <tr><td>산지</td><td>제주 (단일 산지)</td><td class="note">산지 직결 · 시기·물량 조정 가능</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="evnote rise">
+    <b style="color:var(--ink)">원료 구분에 관하여.</b>
+    이 원료는 <b style="color:var(--ink)">착즙 후 남는 껍질·속껍질·과육부</b>를 건조·규격화한 것으로,
+    껍질만 말린 <b style="color:var(--ink)">귤피와는 다른 원료</b>입니다.
+    따라서 저희는 착즙 잔여물을 기준으로 한 자료만 근거로 사용하며,
+    껍질 기준 수치를 인용할 때는 그 사실을 함께 밝힙니다.
+  </p>
+</div></section>
+
+<!-- ══════════ 03 활용 분야 ══════════ -->
+<section id="use"><div class="w">
+  <div class="snum rise">셋</div>
+  <h2 class="rise">이 원료가 들어갈 수 있는 열여섯 갈래</h2>
+  <p class="sub rise">분야를 좁히지 않고 전부 공개합니다.
+    <b>지금 바로 보낼 수 있는 곳</b>, <b>규격을 맞추면 되는 곳</b>, <b>함께 만들어 가야 하는 곳</b>으로
+    나누어 두었습니다. 되는 것과 아직 이른 것을 섞지 않는 편이 서로에게 낫다고 생각합니다.</p>
+
+  <div class="tierhead rise"><b>바로 공급 가능</b><span>건조 원물·분말·생박을 그대로</span></div>
+  <div class="list rise">
+    <div class="row"><div class="no">1</div><div class="nm">가축 사료</div>
+      <div class="ds">한우·양돈 등 <em>축종별 배합 상한 가이드</em>를 함께 드립니다</div></div>
+    <div class="row"><div class="no">2</div><div class="nm">제지·포장재 원료</div>
+      <div class="ds">골판지 원지 배합, 펄프몰드 용기·완충재 — 국내에서 이미 양산되는 용도입니다</div></div>
+    <div class="row"><div class="no">3</div><div class="nm">친환경 농자재</div>
+      <div class="ds">토양개량제·유기질비료, 축사 악취저감 — <em>가공 없이 건조 원물 그대로</em> 들어갑니다</div></div>
+    <div class="row"><div class="no">4</div><div class="nm">곤충 사육 배지</div>
+      <div class="ds">동애등에 유충 먹이 — <em>건조 전 생박</em>이라 건조 에너지가 들지 않습니다</div></div>
+    <div class="row"><div class="no">5</div><div class="nm">버섯 재배 배지</div>
+      <div class="ds">기존 배지 재료의 일부를 대체하는 자리입니다</div></div>
+    <div class="row"><div class="no">6</div><div class="nm">3D프린팅·바이오플라스틱</div>
+      <div class="ds">필라멘트용 분말 — <em>입도와 수분을 맞춰</em> 연중 같은 규격으로 공급합니다</div></div>
+  </div>
+
+  <div class="tierhead rise"><b>규격·성적서 확인 후 가능</b><span>용도별 시험성적서를 갖추면 열리는 자리</span></div>
+  <div class="list rise">
+    <div class="row"><div class="no">7</div><div class="nm">식품용 식이섬유</div>
+      <div class="ds">제빵·음료·소스 배합용. 식품용 위생 규격 확인이 선행됩니다</div></div>
+    <div class="row"><div class="no">8</div><div class="nm">펫푸드 원료</div>
+      <div class="ds">장 건강 소구 식이섬유 · 체중관리 처방식 — 수입 감귤 섬유의 <em>국내산 대체</em></div></div>
+    <div class="row"><div class="no">9</div><div class="nm">반려동물 배변·탈취재</div>
+      <div class="ds">먹이는 것이 아니라 까는 용도 — 흡수와 냄새 중화</div></div>
+    <div class="row"><div class="no">10</div><div class="nm">화장품 원료</div>
+      <div class="ds">제주산 원물을 대량으로 — <em>제주 원료 요건</em>이 필요한 제형에 활용</div></div>
+    <div class="row"><div class="no">11</div><div class="nm">양식 사료 첨가제</div>
+      <div class="ds">폐사 저감(항병력) 용도 — 어종별 급여 시험은 협의 가능합니다</div></div>
+    <div class="row"><div class="no">12</div><div class="nm">펙틴 추출 원료</div>
+      <div class="ds">추출 설비를 갖춘 회사에 원물을 납품하는 자리입니다</div></div>
+  </div>
+
+  <div class="tierhead rise"><b>함께 개발할 자리</b><span>공정이나 연구가 함께 필요한 분야</span></div>
+  <div class="list rise">
+    <div class="row"><div class="no">13</div><div class="nm">발효 가공식품 소재</div>
+      <div class="ds">발효 설비를 갖춘 회사와 협업하는 자리입니다</div></div>
+    <div class="row"><div class="no">14</div><div class="nm">천연 생활화학</div>
+      <div class="ds">리모넨 계열 향료·소재 — 실제 함량은 검증 후 공개합니다</div></div>
+    <div class="row"><div class="no">15</div><div class="nm">비건 섬유·가죽</div>
+      <div class="ds">감귤 셀룰로오스 소재 — 국내 개발사와 함께 만들 자리입니다</div></div>
+    <div class="row"><div class="no">16</div><div class="nm">바이오차·에너지·전극 소재</div>
+      <div class="ds">대형 설비를 전제로 한 장기 검토 분야입니다</div></div>
+  </div>
+</div></section>
+
+<!-- ══════════ 04 근거 자료 ══════════ -->
+<section id="evidence"><div class="w">
+  <div class="snum rise">넷</div>
+  <h2 class="rise">데이터가 확보된 분야는 근거로 말합니다</h2>
+  <p class="quote rise">"잘 자란다"가 아니라 "덜 죽는다".<br>
+    자료가 말하는 만큼만 적습니다.</p>
+
+  <div class="ev rise">
+    <div class="evc">
+      <h3>축산 사료</h3>
+      <p>한우 비육우를 대상으로 한 국내 연구에서 감귤부산물 TMR 급여 시
+        <b>두당 조수입 증가</b>가 보고되었습니다. 양돈은 5~15% 범위가 문헌으로 확립되어 있습니다.</p>
+      <p>축종별 배합 상한 가이드와 함께, <b>비육 후기 급여 시 지방색 관련 주의사항</b> 같은
+        불리한 단서도 같이 안내합니다.</p>
+      <div class="src">정인철 외(2007) 한국식품영양과학회지 · 양승주 외(2006) 동아시아식생활학회지</div>
+    </div>
+
+    <div class="evc">
+      <h3>양식 사료</h3>
+      <p>발효 감귤박 2%를 급여한 뒤 병원균을 감염시킨 새우 시험에서
+        <b>생존율 43.3% → 68.3%</b>로 보고되었습니다.
+        다만 같은 시험에서 <b>성장 지표는 유의한 차이가 없었습니다.</b></p>
+      <p>그래서 성장 촉진이 아니라 <b>폐사 저감</b> 용도로 안내합니다.
+        국내 넙치·조피볼락 급여 데이터는 <b>현재 확보 중</b>입니다.</p>
+      <div class="src">자체 양식사료 기술부록(어종별 배합비·논문 DOI 수록) · 상세는 문의 시 제공</div>
+    </div>
+
+    <div class="evc">
+      <h3>펫푸드</h3>
+      <p>반려견 급여 시험에서 감귤 유래 섬유를 배합한 군의
+        <b>분변 부티르산이 대조군 대비 크게 증가</b>한 결과가 보고되었습니다.</p>
+      <p>수입 감귤 섬유가 차지하던 자리를 <b>제주산으로 대체</b>하는 용도입니다.</p>
+      <div class="src">관련 기능성 성분 · 헤스페리딘 · 노빌레틴 · 저분자 올리고당 · 펙틴</div>
+    </div>
+
+    <div class="evc">
+      <h3>농자재 · 배지</h3>
+      <p>감귤박을 활용한 <b>토양 보수성 향상</b>, <b>축사 악취 저감</b>,
+        <b>버섯 배지 일부 대체 시 수량 유지</b>가 국가기관 실증으로 보고되었습니다.</p>
+      <p>가공 공정이 필요 없어, 건조 원물을 그대로 쓰실 수 있는 분야입니다.</p>
+      <div class="src">농촌진흥청 발표자료 · 상세 서지는 문의 시 제공</div>
+    </div>
+  </div>
+
+  <p class="evnote rise">
+    ※ 게재한 수치는 모두 출처와 함께 표기했습니다. 검사성적서·논문 원문·배합 가이드 등
+    상세 자료는 <a href="#contact" style="color:var(--green);font-weight:700">문의</a> 주시면
+    분야에 맞춰 보내드립니다.
+  </p>
+</div></section>
+
+<!-- ══════════ 05 회사 소개 ══════════ -->
+<section id="company"><div class="w">
+  <div class="snum rise">다섯</div>
+  <h2 class="rise">제주 산지에서, 약 20년</h2>
+  <div class="co rise">
+    <div>
+      <p>(주)수창은 제주 산지를 기반으로 농수산 원물 <b>230여 종</b>을 취급해 온
+        B2B 원료 공급사입니다. 산지에 붙어 있다는 것은
+        <b>물량과 시기, 규격을 직접 조정할 수 있다</b>는 뜻입니다.</p>
+      <p>감귤 자원은 <b>겨울에 집중해서 나옵니다</b>. 이 점은 감추지 않고 먼저 말씀드립니다 —
+        그래서 첫 상담에서 <b>연중 공급 계획</b>부터 함께 정합니다.
+        연간 소요량과 투입 시기를 알려주시면, 그에 맞춘 공급·보관 방식을 제안드립니다.</p>
+      <p>소량 샘플부터 대량 공급까지 같은 규격으로 대응합니다.</p>
+    </div>
+    <div class="costat">
+      <dl><dt>업력</dt><dd>약 20년<small>제주 기반 B2B 원료 공급</small></dd></dl>
+      <dl><dt>취급 원물</dt><dd>230여 종<small>농산·수산 원물</small></dd></dl>
+      <dl><dt>순환 자원</dt><dd>연 5~7만 톤<small>제주 감귤 자원 · 건조 기준 약 1만 톤</small></dd></dl>
+      <dl><dt>공급 형태</dt><dd>3종<small>건조 원물 · 분말 · 생박</small></dd></dl>
+    </div>
+  </div>
+</div></section>
+
+<!-- ══════════ 06 문의 ══════════ -->
+<section class="cta" id="contact"><div class="w">
+  <div class="snum rise">여섯</div>
+  <h2 class="rise">샘플·견적 문의</h2>
+  <p class="sub rise">관심 분야를 알려주시면, <b>그 분야의 자료와 규격</b>을 함께 담아 회신드립니다.
+    아직 검토 초기 단계여도, ESG·지속가능 소재를 살펴보는 단계여도 괜찮습니다.</p>
+
+  <form class="rise" id="inquiry" novalidate>
+    <div class="field"><label for="f-company">회사명 <i>*</i></label>
+      <input id="f-company" name="company" placeholder="(주)○○" required></div>
+    <div class="field"><label for="f-name">담당자 <i>*</i></label>
+      <input id="f-name" name="name" placeholder="성함" required></div>
+    <div class="field"><label for="f-contact">연락처 <i>*</i></label>
+      <input id="f-contact" name="contact" placeholder="이메일 또는 전화번호" required></div>
+    <div class="field"><label for="f-field">관심 분야</label>
+      <select id="f-field" name="field">
+        <option>가축 사료</option>
+        <option>펫푸드 원료</option>
+        <option>양식 사료 첨가제</option>
+        <option>제지·포장재</option>
+        <option>친환경 농자재·배지</option>
+        <option>곤충 사육 배지</option>
+        <option>3D프린팅·바이오플라스틱</option>
+        <option>식품용 식이섬유</option>
+        <option>화장품 원료</option>
+        <option>반려동물 배변·탈취재</option>
+        <option>펙틴·발효 소재</option>
+        <option>ESG·지속가능 소재 검토</option>
+        <option>기타 / 아직 미정</option>
+      </select></div>
+    <div class="field full"><label for="f-stage">검토 단계</label>
+      <select id="f-stage" name="stage">
+        <option>정보 수집 중</option>
+        <option>샘플 테스트 예정</option>
+        <option>구매·계약 검토 중</option>
+      </select></div>
+    <div class="field full"><label for="f-msg">문의 내용</label>
+      <textarea id="f-msg" name="message" rows="4"
+        placeholder="필요 물량·요구 규격(수분·입도)·일정, 또는 필요한 증빙 자료 형식을 적어주시면 회신이 빨라집니다"></textarea></div>
+    <div class="formmsg" id="formmsg"></div>
+    <button class="send" type="submit">문의 보내기</button>
+    <p class="formnote">보내주신 정보는 문의 회신 목적으로만 사용합니다.</p>
+  </form>
+</div></section>
+
+<footer><div class="w">
+  <b>(주)수창</b> · 제주특별자치도 · 감귤 자원순환(업사이클) 원료 공급<br>
+  표시·광고 관련 문구는 관련 법령을 준수하며, 게재한 수치는 출처를 함께 표기합니다.
+  환경 성과 수치는 산정 기준과 함께 협의하여 제공합니다.
+</div></footer>
+
+<script>
+/* ── 스크롤 등장 모션 ── */
+const io = new IntersectionObserver(es=>{
+  es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+},{threshold:.12, rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rise').forEach((el,i)=>{
+  el.style.transitionDelay = Math.min(i*40,240)+'ms';
+  io.observe(el);
+});
+
+/* ── 문의 폼 ──
+   지금은 메일 앱을 여는 방식(mailto)입니다.
+   ▶ 접수 방식이 정해지면 아래 MAIL_TO 를 실제 주소로 바꾸거나,
+     스프레드시트·이메일 자동 접수로 이 부분만 교체하면 됩니다. */
+const MAIL_TO = '문의메일주소@example.com';   // ← 실제 수신 메일 주소로 교체할 것
+
+const form = document.getElementById('inquiry');
+const msgBox = document.getElementById('formmsg');
+
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const d = Object.fromEntries(new FormData(form).entries());
+
+  if(!d.company?.trim() || !d.name?.trim() || !d.contact?.trim()){
+    msgBox.textContent = '회사명 · 담당자 · 연락처를 입력해 주세요.';
+    msgBox.classList.add('on');
+    return;
+  }
+
+  const body =
+    `회사명: ${d.company}\n` +
+    `담당자: ${d.name}\n` +
+    `연락처: ${d.contact}\n` +
+    `관심 분야: ${d.field}\n` +
+    `검토 단계: ${d.stage}\n\n` +
+    `문의 내용:\n${d.message || '-'}\n`;
+
+  const href = 'mailto:' + MAIL_TO +
+    '?subject=' + encodeURIComponent(`[감귤박 업사이클 원료 문의] ${d.company} ${d.name}`) +
+    '&body=' + encodeURIComponent(body);
+
+  msgBox.textContent = '메일 작성 창이 열립니다. 열리지 않으면 아래 내용을 복사해 보내주세요.';
+  msgBox.classList.add('on');
+  window.location.href = href;
+});
+</script>
+</body>
+</html>
