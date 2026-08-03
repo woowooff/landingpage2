@@ -211,10 +211,32 @@ select option{color:#1f231f;background:#fff}
 button.send{grid-column:1/-1;background:#fffdf8;color:var(--green);border:0;font-weight:800;
   font-size:15.5px;padding:17px;border-radius:2px;cursor:pointer;font-family:inherit;transition:.2s}
 button.send:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.2)}
+button.send:disabled{opacity:.6;cursor:progress;transform:none;box-shadow:none}
 .formnote{grid-column:1/-1;font-size:12.5px;color:#a9d3bf;margin:0}
 .formmsg{grid-column:1/-1;font-size:14px;color:#fff;background:#215540;border:1px solid #38684f;
-         padding:14px 16px;border-radius:2px;display:none}
+         padding:14px 16px;border-radius:2px;display:none;line-height:1.65}
 .formmsg.on{display:block}
+.formmsg.err{border-color:#c98b6a;background:#3a2a20}
+
+/* 개인정보 동의 */
+.agree{grid-column:1/-1;display:flex;align-items:flex-start;gap:10px;font-size:13px;
+       color:#c3ded1;line-height:1.6}
+.agree input{width:17px;height:17px;flex:none;margin-top:2px;accent-color:#a9d3bf;padding:0}
+.agree label{cursor:pointer}
+.agree a{color:#fff;text-decoration:underline;text-underline-offset:3px}
+
+/* 봇 차단용 — 사람 눈에 안 보이는 칸 */
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+/* 접수 완료 화면 */
+.done{display:none;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.22);
+      border-radius:3px;padding:36px;max-width:740px}
+.done.on{display:block}
+.done .mark{font-size:34px;line-height:1;margin-bottom:16px}
+.done h3{font-family:var(--serif);font-size:23px;color:#fff;margin:0 0 12px;font-weight:700}
+.done p{margin:0 0 10px;color:#c3ded1;font-size:15px}
+.done p:last-child{margin-bottom:0}
+.done b{color:#fff}
 @media(max-width:700px){form{grid-template-columns:1fr}}
 
 footer{padding:46px 0;font-size:13px;color:var(--ink3);border-top:1px solid var(--rule);line-height:1.8}
@@ -509,10 +531,30 @@ footer b{color:var(--ink2)}
     <div class="field full"><label for="f-msg">문의 내용</label>
       <textarea id="f-msg" name="message" rows="4"
         placeholder="필요 물량·요구 규격(수분·입도)·일정, 또는 필요한 증빙 자료 형식을 적어주시면 회신이 빨라집니다"></textarea></div>
+
+    <!-- 봇 차단용 칸 — 사람에게는 보이지 않습니다 -->
+    <div class="hp" aria-hidden="true">
+      <label for="f-website">웹사이트</label>
+      <input id="f-website" name="website" tabindex="-1" autocomplete="off"></div>
+
+    <div class="agree">
+      <input type="checkbox" id="f-agree" name="agree">
+      <label for="f-agree">문의 회신을 위한 <b>개인정보 수집·이용</b>에 동의합니다.
+        (수집 항목: 회사명·담당자명·연락처 / 목적: 문의 회신 및 자료 제공 / 보유 기간: 문의 처리 후 1년)</label>
+    </div>
+
     <div class="formmsg" id="formmsg"></div>
-    <button class="send" type="submit">문의 보내기</button>
-    <p class="formnote">보내주신 정보는 문의 회신 목적으로만 사용합니다.</p>
+    <button class="send" type="submit" id="sendbtn">문의 보내기</button>
+    <p class="formnote">접수되면 입력하신 이메일로 <b style="color:#fff">접수 확인 메일</b>이 자동 발송됩니다.</p>
   </form>
+
+  <div class="done" id="done">
+    <div class="mark">✓</div>
+    <h3>문의가 정상 접수되었습니다</h3>
+    <p>입력하신 이메일로 <b>접수 확인 메일</b>을 보내드렸습니다. 받은편지함에 없으면 스팸함도 확인해 주세요.</p>
+    <p>담당자가 내용을 확인한 뒤 <b>영업일 기준 1~2일</b> 안에 회신드리겠습니다.
+      요청하신 분야의 규격 자료와 근거 자료를 함께 준비해 보내드립니다.</p>
+  </div>
 </div></section>
 
 <footer><div class="w">
@@ -531,25 +573,82 @@ document.querySelectorAll('.rise').forEach((el,i)=>{
   io.observe(el);
 });
 
-/* ── 문의 폼 ──
-   지금은 메일 앱을 여는 방식(mailto)입니다.
-   ▶ 접수 방식이 정해지면 아래 MAIL_TO 를 실제 주소로 바꾸거나,
-     스프레드시트·이메일 자동 접수로 이 부분만 교체하면 됩니다. */
-const MAIL_TO = '문의메일주소@example.com';   // ← 실제 수신 메일 주소로 교체할 것
+/* ═══════════════════ 문의 폼 접수 ═══════════════════
+   구글 Apps Script가 ①구글 시트 저장 ②담당자 알림 메일
+   ③신청자 자동회신 메일을 한 번에 처리합니다.
 
-const form = document.getElementById('inquiry');
-const msgBox = document.getElementById('formmsg');
+   ▶ 설치 후 받은 웹앱 주소를 아래 GAS_URL 에 붙여넣으세요.
+     (설치 방법: 같은 폴더의 「📮 문의폼 설치안내.md」)
+     비워 두면 메일 앱을 여는 방식으로 자동 전환됩니다.
+   ═══════════════════════════════════════════════════ */
+const GAS_URL  = '';                            // ← 여기에 웹앱 주소를 붙여넣기
+const MAIL_TO  = 'suchang.marketing@gmail.com'; // 위가 비었을 때 쓰는 예비 수단
 
-form.addEventListener('submit', e => {
+const form    = document.getElementById('inquiry');
+const msgBox  = document.getElementById('formmsg');
+const sendBtn = document.getElementById('sendbtn');
+const doneBox = document.getElementById('done');
+
+function showMsg(text, isError){
+  msgBox.textContent = text;
+  msgBox.classList.toggle('err', !!isError);
+  msgBox.classList.add('on');
+}
+
+form.addEventListener('submit', async e => {
   e.preventDefault();
   const d = Object.fromEntries(new FormData(form).entries());
 
   if(!d.company?.trim() || !d.name?.trim() || !d.contact?.trim()){
-    msgBox.textContent = '회사명 · 담당자 · 연락처를 입력해 주세요.';
-    msgBox.classList.add('on');
+    showMsg('회사명 · 담당자 · 연락처를 입력해 주세요.', true);
+    return;
+  }
+  if(!d.agree){
+    showMsg('개인정보 수집·이용 동의에 체크해 주세요.', true);
     return;
   }
 
+  const payload = {
+    company: d.company, name: d.name, contact: d.contact,
+    field: d.field, stage: d.stage, message: d.message,
+    website: d.website || '',          // 봇 차단용
+    source: location.hostname || '소개페이지'
+  };
+
+  /* 웹앱 주소가 아직 없으면 메일 앱으로 대체 */
+  if(!GAS_URL){
+    openMailApp(payload);
+    return;
+  }
+
+  sendBtn.disabled = true;
+  sendBtn.textContent = '보내는 중…';
+  showMsg('접수 중입니다. 잠시만 기다려 주세요.');
+
+  try{
+    /* 헤더를 따로 붙이지 않아야 브라우저 보안 검사(preflight) 없이 전송됩니다 */
+    const res  = await fetch(GAS_URL, { method:'POST', body: JSON.stringify(payload) });
+    const json = await res.json();
+
+    if(json.ok){
+      form.style.display = 'none';
+      doneBox.classList.add('on');
+      doneBox.scrollIntoView({ behavior:'smooth', block:'center' });
+    }else{
+      throw new Error(json.error || '접수 처리 중 문제가 발생했습니다.');
+    }
+  }catch(err){
+    console.error(err);
+    showMsg('접수 중 문제가 생겼습니다. 메일 작성 창을 열어 드릴 테니 그대로 보내주세요.', true);
+    setTimeout(() => openMailApp(payload), 900);
+  }finally{
+    sendBtn.disabled = false;
+    sendBtn.textContent = '문의 보내기';
+  }
+});
+
+/* 예비 수단 — 메일 앱 열기 */
+function openMailApp(d){
   const body =
     `회사명: ${d.company}\n` +
     `담당자: ${d.name}\n` +
@@ -558,14 +657,11 @@ form.addEventListener('submit', e => {
     `검토 단계: ${d.stage}\n\n` +
     `문의 내용:\n${d.message || '-'}\n`;
 
-  const href = 'mailto:' + MAIL_TO +
-    '?subject=' + encodeURIComponent(`[감귤박 업사이클 원료 문의] ${d.company} ${d.name}`) +
+  showMsg('메일 작성 창이 열립니다. 열리지 않으면 ' + MAIL_TO + ' 로 보내주세요.');
+  window.location.href = 'mailto:' + MAIL_TO +
+    '?subject=' + encodeURIComponent(`[감귤 업사이클 원료 문의] ${d.company} ${d.name}`) +
     '&body=' + encodeURIComponent(body);
-
-  msgBox.textContent = '메일 작성 창이 열립니다. 열리지 않으면 아래 내용을 복사해 보내주세요.';
-  msgBox.classList.add('on');
-  window.location.href = href;
-});
+}
 </script>
 </body>
 </html>
