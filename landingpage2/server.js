@@ -19,17 +19,19 @@ function hasConfiguredValue(value) {
   const normalized = value.trim();
   if (!normalized) return false;
 
+  // 주의: 아래 비교는 소문자로 하므로 패턴도 반드시 소문자로 적을 것
   const blockedPatterns = [
     'your-',
-    'YOUR_',
+    'your_',
+    'put_your',
+    'put-your',
+    '_here',
     'example',
     'replace',
     'changeme',
     'gmail-app-password',
-    'your-project',
-    'your-service-account',
-    'your-google-sheet-id',
-    'your-private-key',
+    'gmail_app_password',
+    'private_key',
     'placeholder',
   ];
 
@@ -191,8 +193,14 @@ app.post('/api/apply', async (req, res) => {
         <p><strong>문의 내용:</strong> ${payload.message || '없음'}</p>
       `;
 
-      await sendMail(transporter, recipientEmail, adminSubject, adminHtml, adminHtml.replace(/<[^>]*>/g, ''));
-      results.adminEmail = true;
+      // 메일이 실패해도 신청 접수 자체는 살린다. 신청자가 실패 화면을 보면 안 되므로.
+      try {
+        await sendMail(transporter, recipientEmail, adminSubject, adminHtml, adminHtml.replace(/<[^>]*>/g, ''));
+        results.adminEmail = true;
+      } catch (mailError) {
+        results.warnings.push(`담당자 알림 메일 발송 실패: ${mailError.message}`);
+        console.error('admin mail failed:', mailError.message);
+      }
 
       const autoReplySubject = '[제주다회] 참가 신청이 접수되었습니다';
       const autoReplyHtml = `
@@ -201,8 +209,13 @@ app.post('/api/apply', async (req, res) => {
         <p>곧 제주다회 팀에서 연락드리겠습니다.</p>
       `;
 
-      await sendMail(transporter, payload.email, autoReplySubject, autoReplyHtml, autoReplyHtml.replace(/<[^>]*>/g, ''));
-      results.autoReply = true;
+      try {
+        await sendMail(transporter, payload.email, autoReplySubject, autoReplyHtml, autoReplyHtml.replace(/<[^>]*>/g, ''));
+        results.autoReply = true;
+      } catch (mailError) {
+        results.warnings.push(`신청자 자동회신 발송 실패: ${mailError.message}`);
+        console.error('auto reply failed:', mailError.message);
+      }
     }
 
     if (!config.sheets) {
