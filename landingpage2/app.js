@@ -6,7 +6,7 @@
    ▶ 웹앱 주소를 발급받았다면 아래 GAS_URL 만 바꾸면 됩니다.
      (설치 방법: 같은 폴더의 「📮 참가신청폼 설치안내.md」)
    ═══════════════════════════════════════════════════════ */
-const GAS_URL = 'PUT_YOUR_WEB_APP_URL_HERE';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbxEJFym6F--lJJAxnwG6EE7nWncGo6AQxr7ixN_oGB06Id4KZMWPpF0S-WwM00MjtDFfg/exec';
 const MAIL_TO = 'woogs4444@gmail.com'; // 전송 실패 시 안내할 담당자 주소
 
 const form = document.getElementById('applyForm');
