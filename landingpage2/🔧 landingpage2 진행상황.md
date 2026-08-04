@@ -57,9 +57,10 @@
   - 웹앱 주소 응답 확인됨 (로그인 없이 접속해도 `{"ok":true}` → **액세스 권한 "모든 사용자" 정상**)
 - `index.html` + `styles.css` — 봇 차단 칸(허니팟) + **개인정보 수집·이용 동의 체크박스** 추가
 
-### 이제 쓰지 않는 것 (지워도 되지만 일단 남겨둠)
-- `server.js`, `package.json`, `node_modules`, `.env`, `SETUP_GUIDE.md`, `.data\applications.json`
-- Apps Script 설치가 끝나 정상 작동을 확인한 뒤에 정리하는 게 안전함
+### 정리한 것 (2026-08-04)
+- **삭제함**: `server.js` · `package.json` · `package-lock.json` · `.env.example` · `SETUP_GUIDE.md`
+  - 이유: 버셀이 "서버 프로그램인가?" 하고 오인해 배포가 꼬이는 걸 막기 위해. 되살리려면 깃 기록에서 꺼내면 됨
+- **로컬에만 남아있음 (깃 추적 안 됨, 언제든 지워도 됨)**: `node_modules\` · `.env` · `.data\applications.json`
 
 ## 4. 주요 파일
 - index.html: 랜딩페이지 구조
