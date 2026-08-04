@@ -114,6 +114,20 @@
               <label for="message">참가 관련 메모</label>
               <textarea id="message" name="message" rows="4" placeholder="차에 대한 궁금한 점이나 참여하고 싶은 이유를 적어주세요."></textarea>
             </div>
+            <!-- 봇 차단용 칸 — 사람에게는 보이지 않습니다 -->
+            <div class="honeypot" aria-hidden="true">
+              <label for="website">웹사이트</label>
+              <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+            </div>
+
+            <div class="form-agree">
+              <input id="agree" name="agree" type="checkbox" />
+              <label for="agree">
+                참가 안내를 위한 <b>개인정보 수집·이용</b>에 동의합니다.
+                (수집 항목: 이름·이메일·연락처 / 목적: 참가 안내 및 회신 / 보유 기간: 신청 처리 후 1년)
+              </label>
+            </div>
+
             <button class="btn btn--primary btn--large" type="submit">참가 신청하기</button>
             <p id="formStatus" class="form-status" aria-live="polite"></p>
           </form>

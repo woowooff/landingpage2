@@ -271,6 +271,37 @@ h2 {
   border-color: var(--accent);
 }
 
+/* 봇 차단용 칸 — 화면에서 완전히 숨김 (읽기 도구에도 안 잡히게) */
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* 개인정보 수집·이용 동의 */
+.form-agree {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.form-agree input {
+  width: 17px;
+  height: 17px;
+  flex: none;
+  margin-top: 3px;
+  accent-color: var(--accent);
+}
+
+.form-agree label {
+  cursor: pointer;
+}
+
 .form-status {
   margin: 8px 0 0;
   min-height: 24px;
