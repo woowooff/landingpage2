@@ -236,7 +236,55 @@ h2 {
 .apply-box {
   max-width: 760px;
   margin: 0 auto;
-  text-align: center;
+  text-align: left;
+}
+
+.apply-form {
+  display: grid;
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.form-row {
+  display: grid;
+  gap: 8px;
+}
+
+.form-row label {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.form-row input,
+.form-row textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 13px 14px;
+  font: inherit;
+  background: #fff;
+}
+
+.form-row input:focus,
+.form-row textarea:focus {
+  outline: 2px solid rgba(122, 75, 46, 0.18);
+  border-color: var(--accent);
+}
+
+.form-status {
+  margin: 8px 0 0;
+  min-height: 24px;
+  color: var(--muted);
+}
+
+.form-status--success {
+  color: #1f6f3f;
+  font-weight: 700;
+}
+
+.form-status--error {
+  color: #9b2c2c;
+  font-weight: 700;
 }
 
 @media (max-width: 900px) {
