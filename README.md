@@ -9,7 +9,7 @@
 |---|---|---|
 | [`LandingPage/`](./LandingPage) | 감귤박 업사이클 원료 소개 | https://jeju-vibe-rho.vercel.app |
 | [`landingpage2/`](./landingpage2) | 제주다회 소개 · 참가 신청 | https://landingpage2-woowooff1.vercel.app |
-| [`weatherApp/`](./weatherApp) | 날씨 웹앱 (오늘·24시간·7일·미세먼지) | 배포 후 기록 |
+| [`weatherApp/`](./weatherApp) | 날씨 웹앱 (오늘·24시간·7일·미세먼지) | https://weather-app-sigma-three-65.vercel.app |
 
 ### 1. 감귤박 소개페이지 (`LandingPage/`)
 제주 감귤 착즙 후 남는 원료(감귤박)를 산업 원료로 순환시키는 사업을 소개하는 1페이지 사이트입니다.
@@ -32,7 +32,8 @@
   - 별도 서버가 필요 없고, 신청이 들어오면 ① 구글 시트 저장 ② 담당자 알림 메일 ③ 신청자 자동회신을 한 번에 처리합니다.
   - 각 폴더의 `apps-script/Code.gs`가 그 코드이며, 설치 방법은 폴더 안 `📮 ...설치안내.md`에 단계별로 적어 뒀습니다.
 - **배포**: [Vercel](https://vercel.com) — 페이지마다 Vercel 프로젝트를 따로 두어 주소를 분리했습니다.
-  `main` 브랜치에 push하면 자동으로 사이트가 갱신됩니다.
+  - 랜딩페이지 2개: `main` 브랜치에 push하면 자동으로 사이트가 갱신됩니다.
+  - 날씨앱(`weather-app` 프로젝트): 아직 깃허브 자동배포에 연결하지 않아, 폴더에서 `vercel deploy --prod`로 배포합니다.
 
 ## 폴더 구조
 
