@@ -13,6 +13,7 @@ import { DailyList } from "@/components/weather/daily-list";
 import { HourlyStrip } from "@/components/weather/hourly-strip";
 import { StatTiles } from "@/components/weather/stat-tiles";
 import { WeatherBackground } from "@/components/weather/weather-background";
+import { WeatherChat } from "@/components/weather/weather-chat";
 import { WeatherEffects } from "@/components/weather/weather-effects";
 import {
   DEFAULT_CITIES,
@@ -250,6 +251,9 @@ export function WeatherDashboard() {
           (무료 · 비상업용)
         </footer>
       </div>
+
+      {/* 날씨 비서 챗봇 (날씨 데이터를 불러온 뒤에만 보인다) */}
+      {data && <WeatherChat data={data} unit={unit} />}
     </div>
   );
 }

@@ -362,6 +362,57 @@ export function pm10Grade(v: number | null): Grade | null {
   return { label: "매우 나쁨", color: "var(--wx-worst)", ratio };
 }
 
+/**
+ * 챗봇에게 넘길 날씨 요약문.
+ * 챗봇이 지어내지 않고 "지금 화면에 보이는 데이터"로만 답하도록 근거를 만들어 준다.
+ */
+export function buildWeatherContext(data: WeatherBundle, unit: Unit): string {
+  const u = `°${unit}`;
+  const { city, current, days, hours, air } = data;
+  const info = describeCode(current.code, current.isDay);
+  const today = days[0];
+  const todayWhen = describeDate(today.date, today.date);
+
+  const nextHours = hours
+    .slice(0, 12)
+    .map((h, i) => `${i === 0 ? "지금" : formatHour(h.time)} ${formatTemp(h.temp, unit)}(비 ${h.pop}%)`)
+    .join(", ");
+
+  const week = days
+    .map((d) => {
+      const when = describeDate(d.date, today.date);
+      const di = describeCode(d.code, true);
+      return `${d.date}(${when.label}) ${di.label} ${formatTemp(d.min, unit)}~${formatTemp(d.max, unit)} 비 ${d.pop}%`;
+    })
+    .join(" / ");
+
+  const pm25 = pm25Grade(air.pm25);
+  const pm10 = pm10Grade(air.pm10);
+  const dust =
+    air.pm25 == null && air.pm10 == null
+      ? "정보 없음"
+      : `초미세먼지(PM2.5) ${air.pm25 == null ? "없음" : `${Math.round(air.pm25)}㎍/㎥ ${pm25?.label}`}, 미세먼지(PM10) ${
+          air.pm10 == null ? "없음" : `${Math.round(air.pm10)}㎍/㎥ ${pm10?.label}`
+        }`;
+
+  return [
+    `[도시] ${city.name}${city.admin ? ` (${city.admin}${city.country ? `, ${city.country}` : ""})` : ""}`,
+    `[현지 시각] ${current.time.replace("T", " ")} (${data.timezone})`,
+    `[지금] ${formatTemp(current.temp, unit)} · 체감 ${formatTemp(current.feels, unit)} · ${info.label} · 습도 ${Math.round(
+      current.humidity,
+    )}% · 바람 ${Math.round(current.wind)}km/h`,
+    `[오늘 ${todayWhen.sub}] 최저 ${formatTemp(today.min, unit)} / 최고 ${formatTemp(today.max, unit)} · 강수확률 ${
+      today.pop
+    }% · 자외선 ${Math.round(today.uv)}(${uvLevel(today.uv)}) · 일출 ${formatClock(today.sunrise)} · 일몰 ${formatClock(
+      today.sunset,
+    )}`,
+    `[앞으로 12시간] ${nextHours}`,
+    `[7일 예보] ${week}`,
+    `[미세먼지] ${dust}`,
+    `[온도 단위] 사용자는 ${u}로 보고 있음`,
+  ].join("\n");
+}
+
 /** 배경 그라데이션 정의 (테마별 CSS background 값) */
 export const THEME_GRADIENT: Record<WxTheme, string> = {
   "clear-day":
