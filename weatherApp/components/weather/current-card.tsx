@@ -5,6 +5,7 @@ import { ArrowDown, ArrowUp, Clock, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { WeatherIcon } from "@/components/weather/weather-icon";
+import { useCountUp } from "@/hooks/use-count-up";
 import {
   convertTemp,
   describeCode,
@@ -18,9 +19,10 @@ export function CurrentCard({ data, unit }: { data: WeatherBundle; unit: Unit })
   const { city, current, days } = data;
   const info = describeCode(current.code, current.isDay);
   const today = days[0];
+  const animatedTemp = useCountUp(convertTemp(current.temp, unit)); // 숫자가 스르륵 올라감
 
   return (
-    <Card className="glass wx-rise h-full border-border/50 shadow-sm">
+    <Card className="glass wx-rise h-full border-border/50 shadow-sm transition-shadow duration-300 hover:shadow-md">
       <CardContent className="flex h-full flex-col gap-4 p-5 sm:p-6">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
@@ -38,11 +40,11 @@ export function CurrentCard({ data, unit }: { data: WeatherBundle; unit: Unit })
         </div>
 
         <div className="flex items-center gap-4">
-          <WeatherIcon icon={info.icon} className="size-20 sm:size-24" />
+          <WeatherIcon icon={info.icon} animate className="size-20 sm:size-24" />
           <div className="min-w-0">
             <div className="flex items-start">
               <span className="text-6xl leading-none font-semibold tracking-tight tabular-nums sm:text-7xl">
-                {Math.round(convertTemp(current.temp, unit))}
+                {Math.round(animatedTemp)}
               </span>
               <span className="mt-1 ml-1 text-xl font-medium text-muted-foreground sm:text-2xl">
                 °{unit}

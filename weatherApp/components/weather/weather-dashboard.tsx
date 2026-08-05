@@ -13,6 +13,7 @@ import { DailyList } from "@/components/weather/daily-list";
 import { HourlyStrip } from "@/components/weather/hourly-strip";
 import { StatTiles } from "@/components/weather/stat-tiles";
 import { WeatherBackground } from "@/components/weather/weather-background";
+import { WeatherEffects } from "@/components/weather/weather-effects";
 import {
   DEFAULT_CITIES,
   describeCode,
@@ -127,6 +128,7 @@ export function WeatherDashboard() {
   return (
     <div className="relative min-h-dvh">
       <WeatherBackground theme={theme} />
+      <WeatherEffects theme={theme} />
 
       <div className="mx-auto w-full max-w-6xl px-4 pt-4 pb-10 sm:px-6 sm:pt-6">
         {/* 상단 바 */}
@@ -146,7 +148,7 @@ export function WeatherDashboard() {
                   type="button"
                   onClick={() => setUnit(u)}
                   aria-pressed={unit === u}
-                  className={`rounded-full px-3 py-1.5 text-sm font-medium transition ${
+                  className={`rounded-full px-3 py-1.5 text-sm font-medium transition active:scale-95 ${
                     unit === u
                       ? "bg-primary text-primary-foreground shadow-sm"
                       : "text-muted-foreground hover:text-foreground"
@@ -177,13 +179,17 @@ export function WeatherDashboard() {
             return (
               <span
                 key={city.id}
-                className={`glass group flex items-center gap-1 rounded-full border py-1 pr-1 pl-3 text-sm transition ${
+                className={`glass group flex items-center gap-1 rounded-full border py-1 pr-1 pl-3 text-sm transition-all duration-200 hover:-translate-y-0.5 ${
                   on
-                    ? "border-foreground/25 bg-background/70 font-semibold"
+                    ? "border-foreground/25 bg-background/70 font-semibold shadow-sm"
                     : "border-border/50 text-muted-foreground hover:text-foreground"
                 }`}
               >
-                <button type="button" onClick={() => setActiveId(city.id)} className="py-0.5">
+                <button
+                  type="button"
+                  onClick={() => setActiveId(city.id)}
+                  className="cursor-pointer py-0.5 transition active:scale-95"
+                >
                   {city.name}
                 </button>
                 {cities.length > 1 && (
@@ -211,7 +217,8 @@ export function WeatherDashboard() {
         )}
 
         {data ? (
-          <>
+          // 도시가 바뀌면 화면이 다시 살짝 떠오르며 나타난다
+          <div key={active?.id}>
             <main className="mt-4 grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.45fr)]">
               <CurrentCard data={data} unit={unit} />
               <StatTiles data={data} unit={unit} />
@@ -225,7 +232,7 @@ export function WeatherDashboard() {
               <DailyList data={data} unit={unit} />
               <AirCard air={data.air} />
             </div>
-          </>
+          </div>
         ) : (
           <LoadingSkeleton />
         )}

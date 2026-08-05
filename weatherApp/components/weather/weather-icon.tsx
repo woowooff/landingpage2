@@ -44,15 +44,36 @@ const TINT: Record<IconKey, string> = {
   storm: "text-violet-500 dark:text-violet-300",
 };
 
+/** 아이콘별 은은한 움직임 (해는 천천히 회전, 비는 살짝 흔들림) */
+const ANIM: Record<IconKey, string> = {
+  sun: "wx-anim-sun",
+  moon: "wx-anim-bob",
+  "cloud-sun": "wx-anim-bob",
+  "cloud-moon": "wx-anim-bob",
+  cloud: "wx-anim-bob",
+  fog: "wx-anim-bob",
+  drizzle: "wx-anim-shake",
+  rain: "wx-anim-shake",
+  snow: "wx-anim-bob",
+  storm: "wx-anim-shake",
+};
+
 export function WeatherIcon({
   icon,
   className,
+  animate = false,
 }: {
   icon: IconKey;
   className?: string;
+  /** 켜면 아이콘이 은은하게 움직인다 (큰 아이콘에만 사용) */
+  animate?: boolean;
 }) {
   const Icon = ICONS[icon];
   return (
-    <Icon aria-hidden strokeWidth={1.6} className={cn("shrink-0", TINT[icon], className)} />
+    <Icon
+      aria-hidden
+      strokeWidth={1.6}
+      className={cn("shrink-0", TINT[icon], animate && ANIM[icon], className)}
+    />
   );
 }
